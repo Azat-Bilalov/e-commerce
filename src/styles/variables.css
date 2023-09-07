@@ -1,9 +1,21 @@
 :root {
+    --bg: #FAFAFA;
+
     --text-primary: #000;
     --text-secondary: #AFADB5;
     --text-accent: #518581;
   
     --border-radius: 0;
+
+    --loader-size-s: 16px;
+    --loader-size-m: 32px;
+    --loader-size-l: 40px;
+    --loader-border-width-s: 2px;
+    --loader-border-width-m: 4px;
+    --loader-border-width-l: 5px;
+    --loader-padding-s: 4px;
+    --loader-padding-m: 8px;
+    --loader-padding-l: 10px;
   
     --button-primary-bg: #518581;
     --button-primary-text: #fff;
@@ -15,6 +27,7 @@
     --button-primary-text-disabled: #fff;
   
     --card-bg: #fff;
+    --card-image-bg: #D9D9D9;
   
     --input-bg: #fff;
     --input-border: #fff;
@@ -43,6 +56,6 @@
     --space-s: 14px;
     --space-m: 16px;
     --space-l: 20px;
-    --space-xl: 24px;
+    --space-xl: 48px;
   }
   
