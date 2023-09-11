@@ -9,6 +9,12 @@
     background-color: var(--button-primary-bg);
     color: var(--button-primary-text);
 
+    &_outline {
+        background-color: transparent;
+        color: var(--button-primary-bg);
+        border: 1px solid var(--button-primary-bg);
+    }
+
     &_disabled {
         background-color: var(--button-primary-bg-disabled);
         color: var(--button-primary-text-disabled);

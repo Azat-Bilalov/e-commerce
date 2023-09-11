@@ -1,9 +1,13 @@
+$card-max-width: 360px;
+$card-min-width: 300px;
+
 .card {
     display: flex;
     flex-direction: column;
     gap: var(--space-xl);
-    max-width: 360px;
-    height: auto;
+    max-width: $card-max-width;
+    min-width: $card-min-width;
+    width: 100%;
     background-color: #fff;
     padding-bottom: var(--space-xl);
     border-radius: var(--border-radius);
@@ -15,7 +19,11 @@
 
     &-image {
         width: 100%;
-        height: auto;
+        aspect-ratio: 1 / 1;
+        // height: 360px;
+        // изображение квадратное
+        
+        object-fit: cover;
         background:  var(--card-image-bg);
         border-radius: var(--border-radius);
     }

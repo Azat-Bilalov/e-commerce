@@ -34,7 +34,7 @@ const MultiDropdown: React.FC<MultiDropdownProps> = ({
   onChange,
   disabled,
   getTitle,
-}) => {
+}: MultiDropdownProps) => {
   const cnDropdown = cn('dropdown');
   const classes = cnDropdown({ disabled }, [className]);
 
@@ -51,7 +51,7 @@ const MultiDropdown: React.FC<MultiDropdownProps> = ({
     setFieldValue('');
   };
 
-  // при нажатии мимо дропдауна закрываем его
+  /** при нажатии мимо дропдауна закрываем его */
   React.useEffect(() => {
     const closeDropdown = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
@@ -71,11 +71,21 @@ const MultiDropdown: React.FC<MultiDropdownProps> = ({
     };
   }, [onChange, value, getTitle]);
 
+  /** при изменении disabled блокируем дропдаун */
   React.useEffect(() => {
     if (disabled) {
       setIsOpened(false);
     }
   }, [disabled]);
+
+  /** при изменении value обновляем поле ввода */
+  React.useEffect(() => {
+    if (value.length > 0) {
+      setFieldValue(getTitle(value));
+    } else {
+      setFieldValue('');
+    }
+  }, [value, getTitle]);
 
   return (
     <div className={classes}>

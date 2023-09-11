@@ -3,6 +3,7 @@ import { cn } from '@bem-react/classname';
 import Text from '../Text';
 
 import './Card.scss';
+import noImage from './images/no-image.png';
 
 export type CardProps = {
   /** Дополнительный classname */
@@ -35,9 +36,22 @@ const Card: React.FC<CardProps> = ({
 }) => {
   const cnCard = cn('card');
 
+  const handleImageError = (event: React.SyntheticEvent<HTMLImageElement>) => {
+    event.currentTarget.src = noImage;
+  };
+
+  const handleActionClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
+  };
+
   return (
     <div className={cnCard(null, [className])} onClick={onClick}>
-      <img className={cnCard('image')} src={image} alt="" />
+      <img
+        className={cnCard('image')}
+        src={image}
+        alt="1"
+        onError={handleImageError}
+      />
       <div className={cnCard('body')}>
         <div className={cnCard('content-slot')}>
           {captionSlot && (
@@ -57,7 +71,9 @@ const Card: React.FC<CardProps> = ({
             <Text view="p-18" weight="bold">
               {contentSlot}
             </Text>
-            <div className={cnCard('action')}>{actionSlot}</div>
+            <div onClick={handleActionClick} className={cnCard('action')}>
+              {actionSlot}
+            </div>
           </div>
         )}
       </div>

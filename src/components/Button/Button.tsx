@@ -8,6 +8,8 @@ import './Button.scss';
 export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   /** Состояние загрузки */
   loading?: boolean;
+  /** Полноцветная или обводная кнопка */
+  outline?: boolean;
   /** Текст кнопки */
   children: React.ReactNode;
 };
@@ -15,13 +17,14 @@ export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 const Button: React.FC<ButtonProps> = ({
   className,
   loading,
+  outline,
   disabled,
   children,
   onClick,
   ...otherProps
 }) => {
   const cnButton = cn('button');
-  const classes = cnButton({ loading, disabled }, [className]);
+  const classes = cnButton({ disabled, outline }, [className]);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (loading) {

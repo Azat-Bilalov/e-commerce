@@ -11,6 +11,7 @@ export default defineConfig({
       '@pages': '/src/App/pages',
       '@utils': '/src/utils',
       '@configs': '/src/configs',
+      '@assets': '/src/assets',
     },
   },
 })

@@ -1,0 +1,25 @@
+$header-bg: #fff;
+$header-padding: 24px 7vw;
+$header-line-color: #F3F3F3;
+$content-margin: 60px 7vw;
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $header-padding;
+    background: $header-bg;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    border-bottom: 2px solid $header-line-color;
+
+    &-brand {
+        display: flex;
+        align-items: center;
+        gap: var(--space-xs);
+        text-decoration: none;
+    }
+}
+
+.content {
+    margin: $content-margin;
+}

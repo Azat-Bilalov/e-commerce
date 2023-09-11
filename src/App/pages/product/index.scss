@@ -1,0 +1,50 @@
+.back-button {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: var(--space-xs);
+    text-decoration: none;
+    margin-bottom: var(--space-l);
+
+    &:hover {
+        cursor: pointer;
+        text-shadow: 0 0 5px var(--color-primary);
+    }
+}
+
+.product {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    justify-content: center;
+    column-gap: var(--space-xl);
+    row-gap: var(--space-l);
+
+    &-image {
+        max-width: 600px;
+        width: 100%;
+        aspect-ratio: 1/1;
+        object-fit: cover;
+        justify-self: end;
+    }
+
+    &-content {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-m);
+        width: 100%;
+    }
+
+    &-actions {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-xl);
+        // margin-top: var(--space-xl);
+        margin-top: clamp(var(--space-s), 5vw, var(--space-xl));
+    }
+
+    &-buttons {
+        display: flex;
+        align-items: center;
+        gap: var(--space-xl);
+    }
+}
