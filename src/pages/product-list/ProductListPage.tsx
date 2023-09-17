@@ -1,8 +1,12 @@
 import React from 'react';
 import { useLoaderData, useSearchParams } from 'react-router-dom';
-import { cn } from '@bem-react/classname';
 import _ from 'lodash';
-import Text from '@components/Text';
+import Text, {
+  TextColor,
+  TextTag,
+  TextView,
+  TextWeight,
+} from '@components/Text';
 import Loader from '@/components/Loader';
 import SearchForm from './components/SearchForm';
 import Filter from './components/Filter';
@@ -10,12 +14,12 @@ import ProductCard from './components/ProductCard';
 import { requestProductList } from './api';
 import { Category, Product } from '@/configs/api';
 
-import './index.scss';
+import styles from './ProductListPage.module.scss';
 
 const ProductListPage = () => {
-  const cnHero = cn('hero');
-  const cnControls = cn('controls');
-  const cnProducts = cn('products');
+  // const cnHero = cn('hero');
+  // const cnControls = cn('controls');
+  // const cnProducts = cn('products');
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -103,48 +107,56 @@ const ProductListPage = () => {
 
   return (
     <>
-      <div className={cnHero()}>
-        <Text tag="h1" view="title">
+      <div className={styles.hero}>
+        <Text tag={TextTag.H1} view={TextView.Title}>
           Product List
         </Text>
-        <Text view="p-20" color="secondary">
+        <Text view={TextView.P20} color={TextColor.Secondary}>
           We display products based on the latest products we have, if you want
           to see our old products please enter the name of the item
         </Text>
       </div>
-      <div className={cnControls()}>
+      <div className={styles.controls}>
         <SearchForm
-          className={cnControls('search-form')}
+          className={styles.controlsSearchForm}
           onSubmit={handleSearch}
           initValue={searchParams.get('search') || ''}
         />
         <Filter
-          className={cnControls('filter')}
+          className={styles.controlsFilter}
           categories={initCategories}
           initValue={searchParams.get('categories')?.split('|')}
           setActiveCategories={handleFilter}
         />
       </div>
-      <div className={cnProducts()}>
-        <div className={cnProducts('title')}>
-          <Text view="title">Total Product</Text>
-          <Text view="p-20" weight="bold" color="accent">
+      <div className={styles.products}>
+        <div className={styles.productsTitle}>
+          <Text view={TextView.Title}>Total Product</Text>
+          <Text
+            view={TextView.P20}
+            weight={TextWeight.Bold}
+            color={TextColor.Accent}
+          >
             {products.length}
           </Text>
         </div>
-        <div className={cnProducts('items')}>
+        <div className={styles.productsItems}>
           {products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
         {loading && !isEnd && (
-          <div className={cnProducts('loader')}>
+          <div className={styles.productsLoader}>
             <Loader />
           </div>
         )}
         {isEnd && (
-          <div className={cnProducts('end')}>
-            <Text view="p-20" weight="bold" color="accent">
+          <div className={styles.productsEnd}>
+            <Text
+              view={TextView.P20}
+              weight={TextWeight.Bold}
+              color={TextColor.Accent}
+            >
               End of list
             </Text>
           </div>

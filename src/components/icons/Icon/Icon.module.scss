@@ -1,0 +1,25 @@
+@use '@configs/styles/variables.scss' as *;
+
+.icon_stroke_primary {
+  stroke: $icon-primary;
+}
+
+.icon_stroke_secondary {
+  stroke: $icon-secondary;
+}
+
+.icon_stroke_accent {
+  stroke: $icon-accent;
+}
+
+.icon_fill_primary {
+  fill: $icon-primary;
+}
+
+.icon_fill_secondary {
+  fill: $icon-secondary;
+}
+
+.icon_fill_accent {
+  fill: $icon-accent;
+}

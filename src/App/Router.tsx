@@ -1,8 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { MainLayout } from './pages/layouts';
-import { ProductListPage, productListLoader } from './pages/product-list';
-import { ProductPage, productLoader } from './pages/product';
-import { ErrorPage } from './pages/error';
+import { MainLayout } from '../pages/layouts';
+import { ProductListPage, productListLoader } from '../pages/product-list';
+import { ProductPage, productLoader } from '../pages/product';
+import { ErrorPage } from '../pages/error';
 
 const Router = createBrowserRouter([
   {

@@ -1,49 +1,55 @@
 import { useLoaderData, useNavigate } from 'react-router-dom';
-import { cn } from '@bem-react/classname';
-import Text from '@components/Text';
+import Text, {
+  TextColor,
+  TextTag,
+  TextView,
+  TextWeight,
+} from '@components/Text';
 import BackIcon from '@/components/icons/BackIcon';
 import { Product } from '@/configs/api';
 
-import './index.scss';
+import styles from './ProductPage.module.scss';
 import Button from '@/components/Button/Button';
 
 const ProductPage = () => {
-  const cnBackButton = cn('back-button');
-  const cnProduct = cn('product');
-
   const navigate = useNavigate();
 
   const product: Product = useLoaderData() as Product;
 
   return (
     <>
-      <div className={cnBackButton()} onClick={() => navigate(-1)}>
+      <div className={styles.backButton} onClick={() => navigate(-1)}>
         <BackIcon color="primary" />
-        <Text tag="span" view="p-20" color="primary">
+        <Text tag={TextTag.Span} view={TextView.P20} color={TextColor.Primary}>
           Back
         </Text>
       </div>
-      <div className={cnProduct()}>
+      <div className={styles.product}>
         <img
-          className={cnProduct('image')}
+          className={styles.productImage}
           src={product.images[0]}
           alt={product.title}
         />
-        <div className={cnProduct('content')}>
-          <Text tag="h1" view="title">
+        <div className={styles.productContent}>
+          <Text tag={TextTag.H1} view={TextView.Title}>
             {product.title}
           </Text>
-          <Text tag="h2" view="p-20" color="accent" weight="bold">
+          <Text
+            tag={TextTag.H2}
+            view={TextView.P20}
+            color={TextColor.Accent}
+            weight={TextWeight.Bold}
+          >
             {product.category}
           </Text>
-          <Text tag="p" view="p-20" color="secondary">
+          <Text view={TextView.P20} color={TextColor.Secondary}>
             {product.description}
           </Text>
-          <div className={cnProduct('actions')}>
-            <Text tag="h2" view="title">
+          <div className={styles.productActions}>
+            <Text tag={TextTag.H2} view={TextView.Title}>
               ${product.price}
             </Text>
-            <div className={cnProduct('buttons')}>
+            <div className={styles.productButtons}>
               <Button>Buy now</Button>
               <Button outline>Add to cart</Button>
             </div>

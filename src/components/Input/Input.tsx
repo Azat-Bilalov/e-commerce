@@ -1,7 +1,7 @@
 import React from 'react';
-import { cn } from '@bem-react/classname';
+import cn from 'classnames';
 
-import './Input.scss';
+import styles from './Input.module.scss';
 
 export type InputProps = Omit<
   React.InputHTMLAttributes<HTMLInputElement>,
@@ -29,25 +29,35 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
 
   const [isFocused, setIsFocused] = React.useState(false);
 
-  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-    setIsFocused(true);
-    onFocus?.(e);
-  };
-  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    setIsFocused(false);
-    onBlur?.(e);
-  };
+  const handleFocus = React.useCallback(
+    (e: React.FocusEvent<HTMLInputElement>) => {
+      setIsFocused(true);
+      onFocus?.(e);
+    },
+    [onFocus],
+  );
 
-  const cnInput = cn('input');
-  const classes = cnInput({ focused: isFocused }, [className]);
+  const handleBlur = React.useCallback(
+    (e: React.FocusEvent<HTMLInputElement>) => {
+      setIsFocused(false);
+      onBlur?.(e);
+    },
+    [onBlur],
+  );
+
+  const cnInput = cn(
+    styles.input,
+    { [styles.inputFocused]: isFocused },
+    className,
+  );
 
   const inputRef = React.useRef<HTMLInputElement>(null);
   React.useImperativeHandle(ref, () => inputRef.current!);
 
   return (
-    <div className={classes} onClick={() => inputRef.current?.focus()}>
+    <div className={cnInput} onClick={() => inputRef.current?.focus()}>
       <input
-        className={cnInput('control')}
+        className={styles.inputField}
         value={value}
         type={type}
         onChange={(event) => onChange(event.target.value)}

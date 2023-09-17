@@ -1,0 +1,80 @@
+/** space */
+$space-xxs: 8px;
+$space-xs: 12px;
+$space-s: 14px;
+$space-m: 16px;
+$space-l: 20px;
+$space-xl: 48px;
+
+/** layout */
+$bg: #fafafa;
+$header-bg: #fff;
+$header-padding: 24px 7vw;
+$header-line-color: #f3f3f3;
+$content-margin: 60px 7vw;
+
+/** typography */
+$text-primary: #000;
+$text-secondary: #afadb5;
+$text-accent: #518581;
+
+/** borders */
+$border-radius: 0;
+
+/** loders */
+$loader-size-s: 16px;
+$loader-size-m: 32px;
+$loader-size-l: 40px;
+$loader-border-width-s: 2px;
+$loader-border-width-m: 4px;
+$loader-border-width-l: 5px;
+$loader-padding-s: 4px;
+$loader-padding-m: 8px;
+$loader-padding-l: 10px;
+
+/** buttons */
+$button-primary-bg: #518581;
+$button-primary-text: #fff;
+$button-primary-bg-hover: #86aaa7;
+$button-primary-text-hover: #fff;
+$button-primary-bg-active: #487773;
+$button-primary-text-active: #fff;
+$button-primary-bg-disabled: #d9d9d9;
+$button-primary-text-disabled: #fff;
+
+/** icons */
+$icon-primary: #000;
+$icon-secondary: #afadb5;
+$icon-accent: #518581;
+
+/** cards */
+$card-bg: #fff;
+$card-image-bg: #d9d9d9;
+$card-max-width: 360px;
+$card-min-width: 300px;
+
+/** inputs */
+$input-bg: #fff;
+$input-border: #fff;
+$input-text: #000;
+$input-placeholder: #afadb5;
+$input-bg-focus: #fff;
+$input-border-focus: #518581;
+$input-text-focus: #000;
+$input-bg-disabled: #fff;
+$input-text-disabled: #00000033;
+
+/** dropdown */
+$dropdown-options-bg: #fff;
+
+/** checkbox */
+$checkbox-bg: #fff;
+$checkbox-border: #fff;
+$checkbox-check: #518581;
+$checkbox-bg-hover: #fff;
+$checkbox-border-hover: #518581;
+$checkbox-check-hover: #518581;
+
+$checkbox-bg-disabled: #f6f5f5;
+$checkbox-border-disabled: #f6f5f5;
+$checkbox-check-disabled: #00000033;

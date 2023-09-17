@@ -1,9 +1,9 @@
 import React from 'react';
-import { cn } from '@bem-react/classname';
+import cn from 'classnames';
 import Input from '../Input';
 import ArrowDownIcon from '../icons/ArrowDownIcon';
 
-import './MultiDropdown.scss';
+import styles from './MultiDropdown.module.scss';
 
 export type Option = {
   /** Ключ варианта, используется для отправки на бек/использования в коде */
@@ -35,27 +35,30 @@ const MultiDropdown: React.FC<MultiDropdownProps> = ({
   disabled,
   getTitle,
 }: MultiDropdownProps) => {
-  const cnDropdown = cn('dropdown');
-  const classes = cnDropdown({ disabled }, [className]);
+  const cnDropdown = cn(
+    styles.dropdown,
+    { [styles.dropdownDisabled]: disabled },
+    className,
+  );
 
   const [isOpened, setIsOpened] = React.useState(false);
   const [fieldValue, setFieldValue] = React.useState(
     value.length > 0 ? getTitle(value) : '',
   );
 
-  const handleFocus = () => {
+  const handleFocus = React.useCallback(() => {
     if (!disabled) {
       setIsOpened(true);
     }
 
     setFieldValue('');
-  };
+  }, [disabled]);
 
   /** при нажатии мимо дропдауна закрываем его */
   React.useEffect(() => {
     const closeDropdown = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      if (!target.closest('.dropdown')) {
+      if (!target.closest(`.${styles.dropdown}`)) {
         setIsOpened(false);
 
         if (value.length > 0) {
@@ -88,9 +91,9 @@ const MultiDropdown: React.FC<MultiDropdownProps> = ({
   }, [value, getTitle]);
 
   return (
-    <div className={classes}>
+    <div className={cnDropdown}>
       <Input
-        className={cnDropdown('input')}
+        className={styles.dropdownInput}
         value={fieldValue}
         placeholder={getTitle(value)}
         onChange={setFieldValue}
@@ -98,7 +101,7 @@ const MultiDropdown: React.FC<MultiDropdownProps> = ({
         disabled={disabled}
         afterSlot={<ArrowDownIcon color="secondary" />}
       />
-      <div className={cnDropdown('options')}>
+      <div className={styles.dropdownOptions}>
         {isOpened &&
           options.map((option) => {
             const isVisible =
@@ -109,12 +112,14 @@ const MultiDropdown: React.FC<MultiDropdownProps> = ({
               (item) => item.key === option.key && item.value === option.value,
             );
 
-            const classes = cnDropdown('option', { selected: isSelected });
+            const cnDropdownOption = cn(styles.dropdownOption, {
+              [styles.dropdownOptionSelected]: isSelected,
+            });
 
             return (
               isVisible && (
                 <div
-                  className={classes}
+                  className={cnDropdownOption}
                   key={option.key}
                   onClick={() => {
                     if (isSelected) {

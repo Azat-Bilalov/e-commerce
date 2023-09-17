@@ -1,9 +1,9 @@
 import React from 'react';
-import { cn } from '@bem-react/classname';
-import Loader from '../Loader';
-import Text from '../Text';
+import cn from 'classnames';
+import Loader, { LoaderSize } from '../Loader';
+import Text, { TextView, TextTag } from '../Text';
 
-import './Button.scss';
+import styles from './Button.module.scss';
 
 export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   /** Состояние загрузки */
@@ -23,31 +23,41 @@ const Button: React.FC<ButtonProps> = ({
   onClick,
   ...otherProps
 }) => {
-  const cnButton = cn('button');
-  const classes = cnButton({ disabled, outline }, [className]);
+  const cnButton = cn(
+    styles.button,
+    { [styles.buttonDisabled]: disabled, [styles.buttonOutline]: outline },
+    [className],
+  );
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    if (loading) {
-      event.preventDefault();
-      return;
-    }
+  const handleClick = React.useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      if (loading) {
+        event.preventDefault();
+        return;
+      }
 
-    if (onClick) {
-      onClick(event);
-    }
-  };
+      if (onClick) {
+        onClick(event);
+      }
+    },
+    [loading, onClick],
+  );
 
   return (
     <button
-      className={classes}
+      className={cnButton}
       onClick={handleClick}
       disabled={disabled || loading}
       {...otherProps}
     >
-      {loading && <Loader className={cnButton('loader')} size="s" />}
-      <Text view="button">{children}</Text>
+      {loading && (
+        <Loader className={styles.buttonLoader} size={LoaderSize.Small} />
+      )}
+      <Text tag={TextTag.Span} view={TextView.Button}>
+        {children}
+      </Text>
     </button>
   );
 };
 
-export default Button;
+export default React.memo(Button);

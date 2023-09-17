@@ -1,19 +1,36 @@
 import React from 'react';
-import { cn } from '@bem-react/classname';
+import cn from 'classnames';
 
-import './Loader.scss';
+import styles from './Loader.module.scss';
+
+export enum LoaderSize {
+  Small = 's',
+  Medium = 'm',
+  Large = 'l',
+}
 
 export type LoaderProps = {
   /** Размер */
-  size?: 's' | 'm' | 'l';
+  size?: LoaderSize;
   /** Дополнительный класс */
   className?: string;
 };
 
-const Loader: React.FC<LoaderProps> = ({ size = 'l', className }) => {
-  const classes = cn('loader')({ size }, [className]);
+const Loader: React.FC<LoaderProps> = ({
+  size = LoaderSize.Large,
+  className,
+}) => {
+  const cnLoader = cn(
+    styles.loader,
+    {
+      [styles.loaderSizeS]: size === LoaderSize.Small,
+      [styles.loaderSizeM]: size === LoaderSize.Medium,
+      [styles.loaderSizeL]: size === LoaderSize.Large,
+    },
+    className,
+  );
 
-  return <div className={classes}></div>;
+  return <div className={cnLoader}></div>;
 };
 
-export default Loader;
+export default React.memo(Loader);

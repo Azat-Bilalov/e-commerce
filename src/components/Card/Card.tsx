@@ -1,8 +1,8 @@
 import React from 'react';
-import { cn } from '@bem-react/classname';
-import Text from '../Text';
+import cn from 'classnames';
+import Text, { TextColor, TextTag, TextView, TextWeight } from '../Text';
 
-import './Card.scss';
+import styles from './Card.module.scss';
 import noImage from './images/no-image.png';
 
 export type CardProps = {
@@ -34,46 +34,54 @@ const Card: React.FC<CardProps> = ({
   onClick,
   actionSlot,
 }) => {
-  const cnCard = cn('card');
+  const cnCard = cn(styles.card, className);
 
-  const handleImageError = (event: React.SyntheticEvent<HTMLImageElement>) => {
-    event.currentTarget.src = noImage;
-  };
+  const handleImageError = React.useCallback(
+    (event: React.SyntheticEvent<HTMLImageElement>) => {
+      event.currentTarget.src = noImage;
+    },
+    [],
+  );
 
-  const handleActionClick = (event: React.MouseEvent) => {
+  const handleActionClick = React.useCallback((event: React.MouseEvent) => {
     event.stopPropagation();
-  };
+  }, []);
 
   return (
-    <div className={cnCard(null, [className])} onClick={onClick}>
+    <div className={cnCard} onClick={onClick}>
       <img
-        className={cnCard('image')}
+        className={styles.cardImage}
         src={image}
         alt="1"
         onError={handleImageError}
       />
-      <div className={cnCard('body')}>
-        <div className={cnCard('content-slot')}>
-          {captionSlot && (
-            <Text view="p-14" weight="medium" color="secondary">
-              {captionSlot}
-            </Text>
-          )}
-          <Text tag="h3" view="p-20" weight="medium" maxLines={2}>
+      <div className={styles.cardBody}>
+        <div className={styles.cardContentSlot}>
+          <Text
+            view={TextView.P14}
+            weight={TextWeight.Medium}
+            color={TextColor.Secondary}
+          >
+            {captionSlot}
+          </Text>
+          <Text
+            tag={TextTag.H3}
+            view={TextView.P20}
+            weight={TextWeight.Medium}
+            maxLines={2}
+          >
             {title}
           </Text>
-          <Text view="p-16" color="secondary" maxLines={3}>
+          <Text view={TextView.P16} color={TextColor.Secondary} maxLines={3}>
             {subtitle}
           </Text>
         </div>
         {(contentSlot || actionSlot) && (
-          <div className={cnCard('action-slot')}>
-            <Text view="p-18" weight="bold">
+          <div className={styles.cardActionSlot}>
+            <Text view={TextView.P18} weight={TextWeight.Bold}>
               {contentSlot}
             </Text>
-            <div onClick={handleActionClick} className={cnCard('action')}>
-              {actionSlot}
-            </div>
+            <div onClick={handleActionClick}>{actionSlot}</div>
           </div>
         )}
       </div>
@@ -81,4 +89,4 @@ const Card: React.FC<CardProps> = ({
   );
 };
 
-export default Card;
+export default React.memo(Card);
