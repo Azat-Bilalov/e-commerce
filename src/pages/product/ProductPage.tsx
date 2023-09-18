@@ -1,20 +1,36 @@
-import { useLoaderData, useNavigate } from 'react-router-dom';
+import React from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import Text, {
   TextColor,
   TextTag,
   TextView,
   TextWeight,
 } from '@components/Text';
+import Button from '@/components/Button/Button';
 import BackIcon from '@/components/icons/BackIcon';
-import { Product } from '@/configs/api';
+import ProductStore from '@/store/ProductStore';
+import { useLocalStore } from '@/utils/useLocalStore';
+import { observer } from 'mobx-react-lite';
 
 import styles from './ProductPage.module.scss';
-import Button from '@/components/Button/Button';
+import { Meta } from '@/utils/meta';
+import _ from 'lodash';
 
 const ProductPage = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
 
-  const product: Product = useLoaderData() as Product;
+  const store = useLocalStore(() => new ProductStore(id!));
+
+  const { product, meta, getProduct } = store;
+
+  React.useEffect(() => {
+    getProduct().then(() => {
+      if (meta === Meta.Error) {
+        navigate('/404');
+      }
+    });
+  }, [meta]);
 
   return (
     <>
@@ -27,12 +43,12 @@ const ProductPage = () => {
       <div className={styles.product}>
         <img
           className={styles.productImage}
-          src={product.images[0]}
-          alt={product.title}
+          src={product?.images[0]}
+          alt={product?.title}
         />
         <div className={styles.productContent}>
           <Text tag={TextTag.H1} view={TextView.Title}>
-            {product.title}
+            {product?.title}
           </Text>
           <Text
             tag={TextTag.H2}
@@ -40,14 +56,14 @@ const ProductPage = () => {
             color={TextColor.Accent}
             weight={TextWeight.Bold}
           >
-            {product.category}
+            {product?.category}
           </Text>
           <Text view={TextView.P20} color={TextColor.Secondary}>
-            {product.description}
+            {product?.description}
           </Text>
           <div className={styles.productActions}>
             <Text tag={TextTag.H2} view={TextView.Title}>
-              ${product.price}
+              ${product?.price}
             </Text>
             <div className={styles.productButtons}>
               <Button>Buy now</Button>
@@ -60,4 +76,4 @@ const ProductPage = () => {
   );
 };
 
-export default ProductPage;
+export default observer(ProductPage);

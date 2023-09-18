@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLoaderData, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import _ from 'lodash';
 import Text, {
   TextColor,
@@ -7,102 +7,25 @@ import Text, {
   TextView,
   TextWeight,
 } from '@components/Text';
-import Loader from '@/components/Loader';
 import SearchForm from './components/SearchForm';
 import Filter from './components/Filter';
+import InfinityScroll from './components/InfinityScroll';
 import ProductCard from './components/ProductCard';
-import { requestProductList } from './api';
-import { Category, Product } from '@/configs/api';
+import { observer } from 'mobx-react-lite';
+import { useSession } from '@/app/SessionProvider';
 
 import styles from './ProductListPage.module.scss';
 
 const ProductListPage = () => {
-  // const cnHero = cn('hero');
-  // const cnControls = cn('controls');
-  // const cnProducts = cn('products');
+  const session = useSession();
+  const { products, meta, endOfList, setParams, loadMoreProducts } =
+    session.productsStore;
+  const [searchParams] = useSearchParams();
 
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const { products: initProducts, categories: initCategories } =
-    useLoaderData() as {
-      products: Product[];
-      categories: Category[];
-    };
-
-  const products = React.useMemo(() => initProducts, [initProducts]);
-  const [loading, setLoading] = React.useState(false);
-  const [isEnd, setIsEnd] = React.useState(false);
-  const [page, setPage] = React.useState(1);
-
-  /** Получение списка товаров по категориям */
-  const handleFilter = React.useCallback(
-    (categories: string[]) => {
-      const search = searchParams.get('search');
-
-      if (search) {
-        setSearchParams({ search, categories: categories.join('|') });
-        return;
-      }
-
-      setSearchParams({ categories: categories.join('|') });
-    },
-    [searchParams],
-  );
-
-  /** Получение списка товаров по поиску */
-  const handleSearch = React.useCallback(
-    (search: string) => {
-      const categories = searchParams.get('categories');
-
-      if (categories) {
-        setSearchParams({ search, categories });
-        return;
-      }
-
-      setSearchParams({ search });
-    },
-    [searchParams],
-  );
-
-  /** Получение списка товаров при скролле */
-  // TODO: вынести в отдельный хук
   React.useEffect(() => {
-    const handleScroll = () => {
-      if (loading || isEnd) return;
-
-      const { scrollTop, scrollHeight, clientHeight } =
-        document.documentElement;
-
-      if (scrollTop + clientHeight >= scrollHeight - 5) {
-        setLoading(true);
-        const search = searchParams.get('search') || '';
-        const categories = searchParams.get('categories') || '';
-        requestProductList({ page: page + 1, search, categories }).then(
-          (data) => {
-            if (data.products && data.products.length) {
-              products.push(...data.products);
-              setLoading(false);
-              setPage(page + 1);
-            } else {
-              setLoading(false);
-              setIsEnd(true);
-              window.removeEventListener('scroll', debouncedHandleScroll);
-            }
-          },
-        );
-      }
-    };
-
-    const debouncedHandleScroll = _.debounce(handleScroll, 500);
-    window.addEventListener('scroll', debouncedHandleScroll);
-
-    return () => window.removeEventListener('scroll', debouncedHandleScroll);
-  }, [loading, isEnd, page]);
-
-  /** сброс isEnd при изменении параметров */
-  React.useEffect(() => {
-    setIsEnd(false);
-    setPage(1);
+    const search = searchParams.get('search') || '';
+    const categories = searchParams.get('categories') || '';
+    setParams({ substring: search, include: categories });
   }, [searchParams]);
 
   return (
@@ -117,17 +40,8 @@ const ProductListPage = () => {
         </Text>
       </div>
       <div className={styles.controls}>
-        <SearchForm
-          className={styles.controlsSearchForm}
-          onSubmit={handleSearch}
-          initValue={searchParams.get('search') || ''}
-        />
-        <Filter
-          className={styles.controlsFilter}
-          categories={initCategories}
-          initValue={searchParams.get('categories')?.split('|')}
-          setActiveCategories={handleFilter}
-        />
+        <SearchForm className={styles.controlsSearchForm} />
+        <Filter className={styles.controlsFilter} />
       </div>
       <div className={styles.products}>
         <div className={styles.productsTitle}>
@@ -137,33 +51,22 @@ const ProductListPage = () => {
             weight={TextWeight.Bold}
             color={TextColor.Accent}
           >
-            {products.length}
+            {products.order.length}
           </Text>
         </div>
-        <div className={styles.productsItems}>
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
+        <InfinityScroll
+          meta={meta}
+          endOfList={endOfList}
+          loadMore={loadMoreProducts}
+          className={styles.productsItems}
+        >
+          {products.order.map((id) => (
+            <ProductCard key={id} product={products.entities[id]} />
           ))}
-        </div>
-        {loading && !isEnd && (
-          <div className={styles.productsLoader}>
-            <Loader />
-          </div>
-        )}
-        {isEnd && (
-          <div className={styles.productsEnd}>
-            <Text
-              view={TextView.P20}
-              weight={TextWeight.Bold}
-              color={TextColor.Accent}
-            >
-              End of list
-            </Text>
-          </div>
-        )}
+        </InfinityScroll>
       </div>
     </>
   );
 };
 
-export default ProductListPage;
+export default observer(ProductListPage);

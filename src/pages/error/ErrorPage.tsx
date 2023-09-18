@@ -1,4 +1,3 @@
-import { isRouteErrorResponse, useRouteError } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import Text, {
   TextColor,
@@ -8,14 +7,17 @@ import Text, {
 } from '@/components/Text';
 import Button from '@/components/Button';
 
-import sytles from './ErrorPage.module.scss';
+import styles from './ErrorPage.module.scss';
 
+// todo: обобщить под react-router-dom
 const ErrorPage = () => {
-  const error = useRouteError();
+  const error = {
+    status: 404,
+  };
 
-  if (isRouteErrorResponse(error) && error.status === 404) {
+  if (error.status === 404) {
     return (
-      <div className={sytles.errorPage}>
+      <div className={styles.errorPage}>
         <Text tag={TextTag.H1} view={TextView.Title}>
           404
         </Text>

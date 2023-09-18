@@ -1,48 +1,52 @@
 import React from 'react';
-import { cn } from '@bem-react/classname';
+import cn from 'classnames';
 import Input from '@/components/Input';
 import Button from '@/components/Button';
 
-import './SearchForm.scss';
+import styles from './SearchForm.module.scss';
+import { useSearchParams } from 'react-router-dom';
 
 type SearchFormProps = {
   className?: string;
-  onSubmit: (value: string) => void;
-  initValue?: string;
 };
 
-const SearchForm = ({ className, onSubmit, initValue }: SearchFormProps) => {
-  const cnSearchForm = cn('search-form');
+const SearchForm: React.FC<SearchFormProps> = ({ className }) => {
+  const cnSearchForm = cn(styles.searchForm, className);
 
-  const [search, setSearch] = React.useState('');
+  const [value, setValue] = React.useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const handleSearchChange = (value: string) => {
-    setSearch(value);
+    setValue(value);
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const value = e.currentTarget.search.value;
-    onSubmit(value);
+
+    if (value) {
+      searchParams.set('search', value);
+      setSearchParams(searchParams);
+    } else {
+      searchParams.delete('search');
+      setSearchParams(searchParams);
+    }
   };
 
   React.useEffect(() => {
-    if (initValue === undefined) return;
-    setSearch(initValue);
-  }, [initValue]);
+    const search = searchParams.get('search') || '';
+    setValue(search);
+  }, [searchParams]);
 
   return (
-    <form className={cnSearchForm(null, [className])} onSubmit={handleSubmit}>
+    <form className={cnSearchForm} onSubmit={handleSubmit}>
       <Input
-        className={cnSearchForm('search')}
         placeholder="Search"
-        value={search}
+        value={value}
         onChange={handleSearchChange}
         name="search"
       />
-      <Button className={cnSearchForm('button')} type="submit">
-        Find now
-      </Button>
+      <Button type="submit">Find now</Button>
     </form>
   );
 };

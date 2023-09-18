@@ -1,63 +1,71 @@
 import React from 'react';
 import MultiDropdown from '@/components/MultiDropdown';
-import { Category } from '@/configs/api';
 import { Option } from '@/components/MultiDropdown';
+import { useSession } from '@/app/SessionProvider';
+import { useSearchParams } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
 
 type FilterProps = {
   className?: string;
-  categories: Category[];
-  initValue?: string[];
-  setActiveCategories: (categories: string[]) => void;
 };
 
-const Filter: React.FC<FilterProps> = ({
-  categories,
-  initValue,
-  setActiveCategories,
-  ...props
-}) => {
+const Filter: React.FC<FilterProps> = ({ className }) => {
+  const session = useSession();
+  const { categories, getCategories } = session.categoriesStore;
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  React.useEffect(() => {
+    getCategories();
+  }, []);
+
   /** устанавливаем опции для MultiDropdown */
-  const options = React.useMemo(
-    () =>
-      categories?.map((category) => ({
-        key: `${category.id}`,
-        value: category.name,
-      })),
-    [categories],
-  );
+  const options = React.useMemo(() => {
+    return categories?.order.map((key) => ({
+      key: `${key}`,
+      value: categories.entities[key].name,
+    }));
+  }, [categories]);
 
   const [filter, setFilter] = React.useState([] as Option[]);
 
-  /** активные категории из инициализации */
+  /** активные категории из строки поиска */
   React.useEffect(() => {
-    if (initValue === undefined) {
+    if (categories.order.length === 0) {
       setFilter([]);
       return;
     }
 
-    const activeCategories = categories
-      .filter((category) => initValue.includes(`${category.id}`))
-      .map((category) => ({
-        key: `${category.id}`,
-        value: category.name,
+    const queryKeys = searchParams.get('categories')?.split('|') || [];
+    const activeCategories = queryKeys
+      .filter((key) => !!Number(key) && categories.order.includes(+key))
+      .map((key) => ({
+        key: `${key}`,
+        value: categories.entities[+key].name,
       }));
     setFilter(activeCategories);
-  }, [categories]); // категории меняются только при загрузке страницы
+  }, [categories, searchParams]);
 
   /** устанавливаем активные категории */
-  const handleChange = React.useCallback(
-    (options: Option[]) => {
-      setFilter(options);
-      const categories = options.map((option) => option.key);
-      setActiveCategories(categories);
-    },
-    [setActiveCategories],
-  );
+  const handleChange = React.useCallback((options: Option[]) => {
+    setFilter(options);
+    const newQueryKeys = options.map((option) => option.key).join('|');
+
+    if (newQueryKeys) {
+      searchParams.set('categories', newQueryKeys);
+      setSearchParams(searchParams);
+    } else {
+      searchParams.delete('categories');
+      setSearchParams(searchParams);
+    }
+  }, []);
 
   /** получаем заголовок для MultiDropdown */
   const getTitle = React.useCallback(
     (options: Option[]) => {
-      return options.map((option) => option.value).join(', ') || 'Filter';
+      if (options.length === 0) return 'Filter';
+      if (options.length === 1) return options[0].value;
+
+      return `${options[0].value} +${options.length - 1}`;
     },
     [options],
   );
@@ -68,9 +76,9 @@ const Filter: React.FC<FilterProps> = ({
       options={options}
       onChange={handleChange}
       getTitle={getTitle}
-      {...props}
+      className={className}
     />
   );
 };
 
-export default Filter;
+export default observer(Filter);

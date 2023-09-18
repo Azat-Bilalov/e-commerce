@@ -1,0 +1,7 @@
+@use '@configs/styles/variables.scss' as *;
+
+.search-form {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: $space-m;
+}

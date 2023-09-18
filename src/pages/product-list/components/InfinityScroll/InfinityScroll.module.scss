@@ -1,0 +1,24 @@
+@use '@configs/styles/variables.scss' as *;
+
+$error-color: #9f4f4f;
+
+.infinity-scroll {
+  &-loader {
+    margin-top: $space-l;
+    display: flex;
+    justify-content: center;
+  }
+
+  &-end {
+    display: flex;
+    justify-content: center;
+    margin-top: $space-xl;
+  }
+
+  &-error {
+    display: flex;
+    justify-content: center;
+    margin-top: $space-xl;
+    color: $error-color;
+  }
+}

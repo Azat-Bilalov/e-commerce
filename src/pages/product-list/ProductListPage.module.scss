@@ -47,15 +47,4 @@ $filter-width: 300px;
     align-items: stretch;
     justify-items: center;
   }
-
-  &-loader {
-    display: flex;
-    justify-content: center;
-  }
-
-  &-end {
-    display: flex;
-    justify-content: center;
-    margin-top: $space-xl;
-  }
 }
