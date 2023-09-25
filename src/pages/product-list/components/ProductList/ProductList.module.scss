@@ -1,0 +1,21 @@
+@use '@configs/styles/variables.scss' as *;
+
+.products {
+  margin-top: $space-xl;
+
+  &-title {
+    display: flex;
+    gap: $space-m;
+    align-items: center;
+    margin-bottom: $space-l;
+  }
+
+  &-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    row-gap: $space-l;
+    column-gap: $space-xl;
+    align-items: stretch;
+    justify-items: center;
+  }
+}

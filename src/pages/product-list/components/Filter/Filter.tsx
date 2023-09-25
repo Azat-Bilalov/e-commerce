@@ -1,7 +1,7 @@
 import React from 'react';
 import MultiDropdown from '@/components/MultiDropdown';
 import { Option } from '@/components/MultiDropdown';
-import { useSession } from '@/app/SessionProvider';
+import { useProducts } from '@/store/ProductsStore/ProductsProvider';
 import { useSearchParams } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 
@@ -10,40 +10,25 @@ type FilterProps = {
 };
 
 const Filter: React.FC<FilterProps> = ({ className }) => {
-  const session = useSession();
-  const { categories, getCategories } = session.categoriesStore;
+  const store = useProducts();
+  const { options, filter, setFilter } = store.categoriesFilterStore;
+
   const [searchParams, setSearchParams] = useSearchParams();
-
-  React.useEffect(() => {
-    getCategories();
-  }, []);
-
-  /** устанавливаем опции для MultiDropdown */
-  const options = React.useMemo(() => {
-    return categories?.order.map((key) => ({
-      key: `${key}`,
-      value: categories.entities[key].name,
-    }));
-  }, [categories]);
-
-  const [filter, setFilter] = React.useState([] as Option[]);
 
   /** активные категории из строки поиска */
   React.useEffect(() => {
-    if (categories.order.length === 0) {
+    if (options.length === 0) {
       setFilter([]);
       return;
     }
 
     const queryKeys = searchParams.get('categories')?.split('|') || [];
-    const activeCategories = queryKeys
-      .filter((key) => !!Number(key) && categories.order.includes(+key))
-      .map((key) => ({
-        key: `${key}`,
-        value: categories.entities[+key].name,
-      }));
+
+    const activeCategories = options.filter((option) =>
+      queryKeys.includes(option.key),
+    );
     setFilter(activeCategories);
-  }, [categories, searchParams]);
+  }, [searchParams, options]);
 
   /** устанавливаем активные категории */
   const handleChange = React.useCallback((options: Option[]) => {
@@ -59,16 +44,13 @@ const Filter: React.FC<FilterProps> = ({ className }) => {
     }
   }, []);
 
-  /** получаем заголовок для MultiDropdown */
-  const getTitle = React.useCallback(
-    (options: Option[]) => {
-      if (options.length === 0) return 'Filter';
-      if (options.length === 1) return options[0].value;
+  /** функция отображения в фильтре */
+  const getTitle = React.useCallback(() => {
+    if (filter.length === 0) return 'Filter';
+    if (filter.length === 1) return filter[0].value;
 
-      return `${options[0].value} +${options.length - 1}`;
-    },
-    [options],
-  );
+    return `${filter[0].value} +${filter.length - 1}`;
+  }, [filter]);
 
   return (
     <MultiDropdown

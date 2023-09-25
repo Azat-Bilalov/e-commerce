@@ -23,7 +23,7 @@ const InfinityScroll: React.FC<InfinityScrollProps> = ({
 }) => {
   React.useEffect(() => {
     const handleScroll = () => {
-      if (endOfList) return;
+      if (endOfList && meta === Meta.Loading) return;
 
       const { scrollTop, scrollHeight, clientHeight } =
         document.documentElement;

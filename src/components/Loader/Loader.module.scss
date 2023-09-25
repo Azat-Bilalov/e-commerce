@@ -7,25 +7,27 @@
   animation: spin 2s linear infinite;
   rotate: 212deg;
 
-  &_size_s {
-    width: $loader-size-s;
-    height: $loader-size-s;
-    border-width: $loader-border-width-s;
-    padding: $loader-padding-s;
-  }
+  &_size {
+    &_s {
+      width: $loader-size-s;
+      height: $loader-size-s;
+      border-width: $loader-border-width-s;
+      padding: $loader-padding-s;
+    }
 
-  &_size_m {
-    width: $loader-size-m;
-    height: $loader-size-m;
-    border-width: $loader-border-width-m;
-    padding: $loader-padding-m;
-  }
+    &_m {
+      width: $loader-size-m;
+      height: $loader-size-m;
+      border-width: $loader-border-width-m;
+      padding: $loader-padding-m;
+    }
 
-  &_size_l {
-    width: $loader-size-l;
-    height: $loader-size-l;
-    border-width: $loader-border-width-l;
-    padding: $loader-padding-l;
+    &_l {
+      width: $loader-size-l;
+      height: $loader-size-l;
+      border-width: $loader-border-width-l;
+      padding: $loader-padding-l;
+    }
   }
 }
 

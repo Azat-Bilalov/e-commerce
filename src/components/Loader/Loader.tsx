@@ -20,15 +20,7 @@ const Loader: React.FC<LoaderProps> = ({
   size = LoaderSize.Large,
   className,
 }) => {
-  const cnLoader = cn(
-    styles.loader,
-    {
-      [styles.loaderSizeS]: size === LoaderSize.Small,
-      [styles.loaderSizeM]: size === LoaderSize.Medium,
-      [styles.loaderSizeL]: size === LoaderSize.Large,
-    },
-    className,
-  );
+  const cnLoader = cn(styles.loader, styles[`loader_size_${size}`], className);
 
   return <div className={cnLoader}></div>;
 };

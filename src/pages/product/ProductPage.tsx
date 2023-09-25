@@ -1,11 +1,13 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import _ from 'lodash';
 import Text, {
   TextColor,
   TextTag,
   TextView,
   TextWeight,
 } from '@components/Text';
+import Carousel from '@/components/Carousel';
 import Button from '@/components/Button/Button';
 import BackIcon from '@/components/icons/BackIcon';
 import ProductStore from '@/store/ProductStore';
@@ -14,7 +16,6 @@ import { observer } from 'mobx-react-lite';
 
 import styles from './ProductPage.module.scss';
 import { Meta } from '@/utils/meta';
-import _ from 'lodash';
 
 const ProductPage = () => {
   const navigate = useNavigate();
@@ -22,14 +23,12 @@ const ProductPage = () => {
 
   const store = useLocalStore(() => new ProductStore(id!));
 
-  const { product, meta, getProduct } = store;
+  const { product, meta } = store;
 
   React.useEffect(() => {
-    getProduct().then(() => {
-      if (meta === Meta.Error) {
-        navigate('/404');
-      }
-    });
+    if (meta === Meta.Error) {
+      navigate('/404/');
+    }
   }, [meta]);
 
   return (
@@ -41,11 +40,7 @@ const ProductPage = () => {
         </Text>
       </div>
       <div className={styles.product}>
-        <img
-          className={styles.productImage}
-          src={product?.images[0]}
-          alt={product?.title}
-        />
+        <Carousel images={product?.images} />
         <div className={styles.productContent}>
           <Text tag={TextTag.H1} view={TextView.Title}>
             {product?.title}
