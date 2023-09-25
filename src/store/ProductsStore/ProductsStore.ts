@@ -10,8 +10,6 @@ export class ProductsStore implements ILocalStore {
   constructor() {
     this.productsListStore = new ProductListStore();
     this.categoriesFilterStore = new CategoriesFilterStore();
-
-    console.log(this.productsListStore);
   }
 
   destroy() {

@@ -1,2 +1,2 @@
-export { CategoriesStore } from './CategoriesFilterStore';
+export { CategoriesFilterStore } from './CategoriesFilterStore';
 export { ProductListStore } from './ProductListStore';
