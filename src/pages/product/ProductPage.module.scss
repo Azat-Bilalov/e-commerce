@@ -15,11 +15,10 @@
 .product {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  justify-content: center;
   column-gap: $space-xl;
   row-gap: $space-l;
 
-  &-image {
+  &-carousel {
     max-width: 600px;
     width: 100%;
     aspect-ratio: 1/1;

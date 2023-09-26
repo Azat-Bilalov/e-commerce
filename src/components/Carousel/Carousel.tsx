@@ -82,8 +82,8 @@ const Carousel: React.FC<CarouselProps> = ({ className, images }) => {
           className={classnames(styles.carouselLeftControl, {
             [styles.carouselControlDisabled]: currentIndex === 0,
           })}
-          height={`12%`}
-          width={`12%`}
+          height={'12%'}
+          width={'12%'}
           onClick={() => changeSlide(-1)}
         />
         <BackIcon
@@ -91,8 +91,8 @@ const Carousel: React.FC<CarouselProps> = ({ className, images }) => {
             [styles.carouselControlDisabled]:
               currentIndex === (images?.length || 1) - 1,
           })}
-          height={`12%`}
-          width={`12%`}
+          height={'12%'}
+          width={'12%'}
           onClick={() => changeSlide(1)}
         />
       </div>

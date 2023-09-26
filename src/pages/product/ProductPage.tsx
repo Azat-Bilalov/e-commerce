@@ -40,7 +40,7 @@ const ProductPage = () => {
         </Text>
       </div>
       <div className={styles.product}>
-        <Carousel images={product?.images} />
+        <Carousel className={styles.productCarousel} images={product?.images} />
         <div className={styles.productContent}>
           <Text tag={TextTag.H1} view={TextView.Title}>
             {product?.title}
