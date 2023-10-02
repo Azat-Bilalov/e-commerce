@@ -4,13 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev1": "vite",
-    "build1": "tsc && vite build",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write",
-    "preview": "vite preview",
     "dev": "cross-env NODE_ENV=development npx webpack serve --mode=development",
-    "build": "cross-env NODE_ENV=production npx webpack --mode=production"
+    "build": "cross-env NODE_ENV=production npx webpack --mode=production",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write"
   },
   "dependencies": {
     "@types/lodash": "^4.14.198",
@@ -19,7 +16,9 @@
     "lodash": "^4.17.21",
     "mobx": "^6.10.2",
     "mobx-react-lite": "^4.0.4",
+    "rc-slider": "^10.3.0",
     "react": "^18.2.0",
+    "react-content-loader": "^6.2.1",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.15.0"
   },

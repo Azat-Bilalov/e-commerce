@@ -4,6 +4,8 @@ $hero-pt: 40px;
 $hero-pb: 48px;
 $hero-width: 643px;
 $filter-width: 300px;
+$sorter-width: 300px;
+$price-slider-width: 300px;
 
 .hero {
   display: flex;
@@ -20,11 +22,51 @@ $filter-width: 300px;
 }
 
 .controls {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  // grid-template-areas: 'search search' 'filter slider' 'sorter reset';
+  grid-template-areas: 'search search search' 'filter sorter slider' '. reset .';
+  align-items: center;
+  justify-content: space-between;
   gap: $space-m;
 
+  &-search-form {
+    grid-area: search;
+  }
+
   &-filter {
+    grid-area: filter;
     max-width: $filter-width;
+  }
+
+  &-sorter {
+    grid-area: sorter;
+    max-width: $sorter-width;
+  }
+
+  &-price-slider {
+    grid-area: slider;
+    max-width: $price-slider-width;
+  }
+
+  &-reset {
+    grid-area: reset;
+    justify-self: center;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-areas: 'search' 'filter' 'sorter' 'slider' 'reset';
+    grid-template-columns: 1fr;
+
+    &-filter {
+      max-width: 100%;
+    }
+
+    &-sorter {
+      max-width: 100%;
+    }
+
+    &-price-slider {
+      max-width: 100%;
+    }
   }
 }

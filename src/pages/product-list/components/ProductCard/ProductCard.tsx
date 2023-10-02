@@ -1,24 +1,29 @@
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Product } from '@/configs/api';
+import { ProductModel } from '@/store/models/products';
 import Card from '@/components/Card';
 import Button from '@/components/Button/Button';
 
 type ProductCardProps = {
-  product: Product;
+  product: ProductModel;
 };
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, ...props }) => {
   const navigate = useNavigate();
 
+  const handleClick = React.useCallback(() => {
+    navigate(`/product/${product.id}`);
+  }, [product.id]);
+
   return (
     <Card
       key={product.id}
-      captionSlot={product.category}
+      captionSlot={product.category.name}
       title={product.title}
       subtitle={product.description}
       image={product.images[0]}
       contentSlot={`$${product.price}`}
-      onClick={() => navigate(`/product/${product.id}`)}
+      onClick={handleClick}
       actionSlot={<Button>Add to Card</Button>}
       {...props}
     />

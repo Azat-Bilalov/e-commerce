@@ -9,7 +9,7 @@
   gap: $space-xxs;
   flex-shrink: 0;
   border: 1px solid $input-border;
-  background: var(--input-bg);
+  background: $input-bg;
   cursor: text;
 
   &_focused {

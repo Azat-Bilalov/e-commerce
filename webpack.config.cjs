@@ -42,6 +42,7 @@ module.exports = {
   output: {
     path: buildPath,
     filename: 'bundle.js',
+    publicPath: '/',
   },
   module: {
     rules: [
@@ -96,6 +97,7 @@ module.exports = {
       '@pages': path.resolve(srcPath, 'app/pages'),
       '@utils': path.resolve(srcPath, 'utils'),
       '@configs': path.resolve(srcPath, 'configs'),
+      '@store': path.resolve(srcPath, 'app/store'),
       '@assets': path.resolve(srcPath, 'assets'),
     },
   },

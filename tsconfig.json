@@ -19,6 +19,7 @@
       "@pages/*": ["src/app/pages/*"],
       "@utils/*": ["src/utils/*"],
       "@configs/*": ["src/configs/*"],
+      "@store/*": ["src/app/store/*"],
       "@assets/*": ["src/assets/*"]
     }
   },

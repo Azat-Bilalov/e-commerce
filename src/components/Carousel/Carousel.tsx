@@ -13,6 +13,9 @@ export type CarouselProps = {
 
 const Carousel: React.FC<CarouselProps> = ({ className, images }) => {
   const cnCarousel = classnames(styles.carousel, className);
+  const cnCarouselControl = classnames(styles.carouselControls, {
+    [styles.carouselControlsHidden]: !images || images.length === 1,
+  });
 
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [touchPosition, setTouchPosition] = React.useState<number | null>(null);
@@ -24,37 +27,43 @@ const Carousel: React.FC<CarouselProps> = ({ className, images }) => {
     [],
   );
 
-  const changeSlide = (direction: number) => {
-    const newIndex = currentIndex + direction;
-    if (images && newIndex >= 0 && newIndex < images.length) {
-      setCurrentIndex(newIndex);
-    }
-  };
+  const changeSlide = React.useCallback(
+    (direction: number) => {
+      const newIndex = currentIndex + direction;
+      if (images && newIndex >= 0 && newIndex < images.length) {
+        setCurrentIndex(newIndex);
+      }
+    },
+    [currentIndex, images],
+  );
 
-  const handleTouchStart = (event: React.TouchEvent) => {
+  const handleTouchStart = React.useCallback((event: React.TouchEvent) => {
     const touchDown = event.touches[0].clientX;
 
     setTouchPosition(touchDown);
-  };
+  }, []);
 
-  const handleTouchMove = (event: React.TouchEvent) => {
-    if (touchPosition === null) {
-      return;
-    }
+  const handleTouchMove = React.useCallback(
+    (event: React.TouchEvent) => {
+      if (touchPosition === null) {
+        return;
+      }
 
-    const currentPosition = event.touches[0].clientX;
-    const direction = touchPosition - currentPosition;
+      const currentPosition = event.touches[0].clientX;
+      const direction = touchPosition - currentPosition;
 
-    if (direction > 10) {
-      changeSlide(1);
-    }
+      if (direction > 10) {
+        changeSlide(1);
+      }
 
-    if (direction < -10) {
-      changeSlide(-1);
-    }
+      if (direction < -10) {
+        changeSlide(-1);
+      }
 
-    setTouchPosition(null);
-  };
+      setTouchPosition(null);
+    },
+    [changeSlide, touchPosition],
+  );
 
   return (
     <div
@@ -77,7 +86,7 @@ const Carousel: React.FC<CarouselProps> = ({ className, images }) => {
         ))}
       </div>
 
-      <div className={styles.carouselControls}>
+      <div className={cnCarouselControl}>
         <BackIcon
           className={classnames(styles.carouselLeftControl, {
             [styles.carouselControlDisabled]: currentIndex === 0,

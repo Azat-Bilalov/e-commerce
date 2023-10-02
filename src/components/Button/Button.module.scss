@@ -10,6 +10,7 @@
   border: none;
   background-color: $button-primary-bg;
   color: $button-primary-text;
+  transition: background-color 0.2s ease-in-out;
 
   &_outline {
     background-color: transparent;
@@ -26,11 +27,13 @@
     background-color: $button-primary-bg-hover;
     color: $button-primary-text-hover;
     cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
   }
 
   &:active:not(:disabled) {
     background-color: $button-primary-bg-active;
     color: $button-primary-text-active;
+    transition: background-color 0.2s ease-in-out;
   }
 
   &-loader {

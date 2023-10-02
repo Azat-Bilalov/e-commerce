@@ -1,3 +1,5 @@
+import { CategoryApi, CategoryModel, normalizeCategory } from './category';
+
 export interface ProductApi {
   id: number;
   title: string;
@@ -6,7 +8,7 @@ export interface ProductApi {
   images: string[];
   creationAt: string;
   updatedAt: string;
-  category: string;
+  category: CategoryApi;
 }
 
 export interface ProductModel {
@@ -17,7 +19,7 @@ export interface ProductModel {
   images: string[];
   creationAt: string;
   updatedAt: string;
-  category: string;
+  category: CategoryModel;
 }
 
 export const normalizeProduct = (from: ProductApi): ProductModel => ({
@@ -28,5 +30,5 @@ export const normalizeProduct = (from: ProductApi): ProductModel => ({
   images: from.images,
   creationAt: from.creationAt,
   updatedAt: from.updatedAt,
-  category: from.category,
+  category: normalizeCategory(from.category),
 });

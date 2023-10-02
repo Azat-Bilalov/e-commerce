@@ -1,3 +1,5 @@
+@use '@configs/styles/variables.scss' as *;
+
 .app {
-  background-color: var(--bg);
+  background-color: $app-bg;
 }

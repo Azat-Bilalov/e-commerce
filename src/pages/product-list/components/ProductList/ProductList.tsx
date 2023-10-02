@@ -12,7 +12,7 @@ export type ProductListProps = {};
 
 const ProductList: React.FC<ProductListProps> = () => {
   const store = useProducts();
-  const { products, meta, endOfList, setParams, loadMoreProducts } =
+  const { products, total, meta, endOfList, setParams, loadMoreProducts } =
     store.productsListStore;
 
   const [searchParams] = useSearchParams();
@@ -20,7 +20,17 @@ const ProductList: React.FC<ProductListProps> = () => {
   React.useEffect(() => {
     const search = searchParams.get('search') || '';
     const categories = searchParams.get('categories') || '';
-    setParams({ substring: search, include: categories });
+    const minPrice = searchParams.get('min_price') || '';
+    const maxPrice = searchParams.get('max_price') || '';
+    const sort = searchParams.get('sort') || '';
+
+    setParams({
+      substring: search,
+      include: categories,
+      min: minPrice,
+      max: maxPrice,
+      sort,
+    });
   }, [searchParams]);
 
   return (
@@ -32,7 +42,7 @@ const ProductList: React.FC<ProductListProps> = () => {
           weight={TextWeight.Bold}
           color={TextColor.Accent}
         >
-          {products.order.length}
+          {total}
         </Text>
       </div>
       <InfinityScroll

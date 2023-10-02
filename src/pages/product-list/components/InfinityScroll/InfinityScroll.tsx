@@ -1,10 +1,10 @@
 import React from 'react';
 import _ from 'lodash';
 import { Meta } from '@/utils/meta';
-import Loader from '@/components/Loader';
 import Text, { TextColor, TextView, TextWeight } from '@/components/Text';
 
 import styles from './InfinityScroll.module.scss';
+import { CardLoader } from '@/components/Card';
 
 export type InfinityScrollProps = {
   className?: string;
@@ -23,12 +23,13 @@ const InfinityScroll: React.FC<InfinityScrollProps> = ({
 }) => {
   React.useEffect(() => {
     const handleScroll = () => {
-      if (endOfList && meta === Meta.Loading) return;
+      if (endOfList || meta === Meta.Loading || meta === Meta.Error) return;
 
       const { scrollTop, scrollHeight, clientHeight } =
         document.documentElement;
 
-      if (scrollTop + clientHeight >= scrollHeight - 5) {
+      /** Подгружаем продукты на высоте 2h карточки от низа страницы */
+      if (scrollTop + clientHeight >= scrollHeight - 1500) {
         loadMore();
       }
     };
@@ -51,9 +52,12 @@ const InfinityScroll: React.FC<InfinityScrollProps> = ({
         </div>
       )}
 
-      {meta === Meta.Loading && !endOfList && (
-        <div className={styles.infinityScrollLoader}>
-          <Loader />
+      {(meta === Meta.Loading || meta === Meta.Initial) && !endOfList && (
+        <div className={styles.infinityScrollCardsLoader}>
+          <CardLoader />
+          <CardLoader />
+          <CardLoader />
+          <CardLoader />
         </div>
       )}
 

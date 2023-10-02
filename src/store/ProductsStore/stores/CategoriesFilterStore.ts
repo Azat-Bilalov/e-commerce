@@ -80,7 +80,7 @@ export class CategoriesFilterStore implements ILocalStore {
         this._categories = categoriesCollection;
         this._meta = Meta.Success;
       } catch (err) {
-        console.log(err);
+        console.error(err);
         this._meta = Meta.Error;
       }
     });

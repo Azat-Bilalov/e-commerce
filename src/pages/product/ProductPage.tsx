@@ -9,13 +9,13 @@ import Text, {
 } from '@components/Text';
 import Carousel from '@/components/Carousel';
 import Button from '@/components/Button/Button';
-import BackIcon from '@/components/icons/BackIcon';
+import BackButton from './components/BackButton/BackButton';
 import ProductStore from '@/store/ProductStore';
 import { useLocalStore } from '@/utils/useLocalStore';
 import { observer } from 'mobx-react-lite';
+import { Meta } from '@/utils/meta';
 
 import styles from './ProductPage.module.scss';
-import { Meta } from '@/utils/meta';
 
 const ProductPage = () => {
   const navigate = useNavigate();
@@ -33,12 +33,7 @@ const ProductPage = () => {
 
   return (
     <>
-      <div className={styles.backButton} onClick={() => navigate(-1)}>
-        <BackIcon color="primary" />
-        <Text tag={TextTag.Span} view={TextView.P20} color={TextColor.Primary}>
-          Back
-        </Text>
-      </div>
+      <BackButton className={styles.backButton} />
       <div className={styles.product}>
         <Carousel className={styles.productCarousel} images={product?.images} />
         <div className={styles.productContent}>
@@ -51,7 +46,7 @@ const ProductPage = () => {
             color={TextColor.Accent}
             weight={TextWeight.Bold}
           >
-            {product?.category}
+            {product?.category.name}
           </Text>
           <Text view={TextView.P20} color={TextColor.Secondary}>
             {product?.description}

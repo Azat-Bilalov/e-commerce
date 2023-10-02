@@ -13,16 +13,27 @@ import {
   observable,
   runInAction,
 } from 'mobx';
-import { GetProductsListParams, GetQueryParams } from './types';
+import {
+  GetProductsListParams,
+  GetQueryParams,
+  ResponseHeaders,
+} from './types';
 import { api } from '@/configs';
+import { Axios, AxiosHeaders } from 'axios';
 
 const PRODUCT_PER_PAGE = 12;
 
-type PrivateFields = '_products' | '_meta' | '_params' | '_endOfList';
+type PrivateFields =
+  | '_products'
+  | '_headers'
+  | '_meta'
+  | '_params'
+  | '_endOfList';
 
 export class ProductListStore implements ILocalStore {
   private _products: CollectionModel<number, ProductModel> =
     getEmptyCollection();
+  private _headers: ResponseHeaders | null = null;
   private _meta = Meta.Initial;
   private _params: GetQueryParams = {};
   private _endOfList = false;
@@ -30,11 +41,15 @@ export class ProductListStore implements ILocalStore {
   constructor() {
     makeObservable<ProductListStore, PrivateFields>(this, {
       _products: observable.ref,
+      _headers: observable.ref,
       _meta: observable,
       _params: observable,
       _endOfList: observable,
       meta: computed,
       products: computed,
+      total: computed,
+      minPrice: computed,
+      maxPrice: computed,
       endOfList: computed,
       setParams: action.bound,
       getProductList: action.bound,
@@ -44,6 +59,18 @@ export class ProductListStore implements ILocalStore {
 
   get products() {
     return this._products;
+  }
+
+  get total() {
+    return Number(this._headers?.['x-total-count'] ?? 0);
+  }
+
+  get minPrice() {
+    return Number(this._headers?.['x-min-price'] ?? 0);
+  }
+
+  get maxPrice() {
+    return Number(this._headers?.['x-max-price'] ?? 0);
   }
 
   get meta() {
@@ -80,6 +107,10 @@ export class ProductListStore implements ILocalStore {
         return;
       }
 
+      if (productsResponse.headers instanceof AxiosHeaders) {
+        this._headers = productsResponse.headers;
+      }
+
       try {
         if (productsResponse.data.length < PRODUCT_PER_PAGE) {
           this._endOfList = true;
@@ -102,7 +133,7 @@ export class ProductListStore implements ILocalStore {
             : productsCollection;
         this._meta = Meta.Success;
       } catch (err) {
-        console.log(err);
+        console.error(err);
         this._meta = Meta.Error;
       }
     });

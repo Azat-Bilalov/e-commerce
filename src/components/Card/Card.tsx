@@ -52,7 +52,7 @@ const Card: React.FC<CardProps> = ({
       <img
         className={styles.cardImage}
         src={image}
-        alt="1"
+        alt=""
         onError={handleImageError}
       />
       <div className={styles.cardBody}>

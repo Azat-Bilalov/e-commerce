@@ -2,10 +2,14 @@ import _ from 'lodash';
 import Text, { TextColor, TextTag, TextView } from '@components/Text';
 import SearchForm from './components/SearchForm';
 import Filter from './components/Filter';
+import Sorter from './components/Sorter';
+import PriceSlider from './components/PriceSlider';
+import ResetButton from './components/ResetButton';
 import ProductList from './components/ProductList';
 import ProductsProvider from '@/store/ProductsStore/ProductsProvider';
 
 import styles from './ProductListPage.module.scss';
+import Button from '@/components/Button';
 
 const ProductListPage = () => {
   return (
@@ -22,6 +26,9 @@ const ProductListPage = () => {
       <div className={styles.controls}>
         <SearchForm className={styles.controlsSearchForm} />
         <Filter className={styles.controlsFilter} />
+        <Sorter className={styles.controlsSorter} />
+        <PriceSlider className={styles.controlsPriceSlider} />
+        <ResetButton className={styles.controlsReset} />
       </div>
       <ProductList />
     </ProductsProvider>

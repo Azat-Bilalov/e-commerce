@@ -17,9 +17,9 @@ const CheckBox: React.FC<CheckBoxProps> = ({
   checked,
   ...props
 }) => {
-  const cnCheckboxIcon = cn(styles.icon, {
-    [styles.iconDisabled]: disabled,
-    [styles.iconChecked]: checked,
+  const cnCheckboxIcon = cn(styles.checkboxIcon, {
+    [styles.checkboxIconDisabled]: disabled,
+    [styles.checkboxIconChecked]: checked,
   });
 
   const handleCheckboxChange = React.useCallback(
@@ -31,16 +31,16 @@ const CheckBox: React.FC<CheckBoxProps> = ({
   );
 
   return (
-    <label styleName={cn(styles.checkbox)}>
+    <label className={styles.checkboxLabel}>
       <input
         type="checkbox"
-        styleName={styles.input}
+        className={styles.checkboxInput}
         onChange={handleCheckboxChange}
         disabled={disabled}
         checked={checked}
         {...props}
       />
-      <span styleName={cnCheckboxIcon}>
+      <span className={cnCheckboxIcon}>
         <CheckIcon width={40} height={40} />
       </span>
     </label>

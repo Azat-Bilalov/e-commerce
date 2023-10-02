@@ -60,7 +60,7 @@ export default class ProductStore implements ILocalStore {
         this._product = normalizeProduct(productsResponse.data);
         this._meta = Meta.Success;
       } catch (err) {
-        console.log(err);
+        console.error(err);
         this._meta = Meta.Error;
       }
     });
