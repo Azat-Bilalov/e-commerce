@@ -1,0 +1,22 @@
+@use '@configs/styles/variables.scss' as *;
+
+$divider-color: rgba(0, 0, 0, 0.1);
+
+.summary-bar {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+
+  @media (max-width: $breakpoint-s) {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: $space-m;
+  }
+
+  &-divider {
+    width: 100%;
+    height: 2px;
+    background-color: $divider-color;
+  }
+}

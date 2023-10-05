@@ -1,0 +1,16 @@
+@use '@configs/styles/variables.scss' as *;
+
+$input-width: 60px;
+
+.counter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: $space-s;
+
+  &_input {
+    width: $input-width;
+    text-align: center;
+    font-size: 18px;
+  }
+}

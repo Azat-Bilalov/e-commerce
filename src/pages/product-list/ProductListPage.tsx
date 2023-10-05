@@ -9,7 +9,6 @@ import ProductList from './components/ProductList';
 import ProductsProvider from '@/store/ProductsStore/ProductsProvider';
 
 import styles from './ProductListPage.module.scss';
-import Button from '@/components/Button';
 
 const ProductListPage = () => {
   return (

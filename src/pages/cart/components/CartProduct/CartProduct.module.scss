@@ -1,0 +1,86 @@
+@use '@configs/styles/variables.scss' as *;
+
+$cart-product-height: 200px;
+$cart-product-max-width: 1440px;
+
+.cart-product {
+  display: grid;
+  grid-template-areas: 'image content price counter remove';
+  grid-template-columns: 1fr 2fr 1fr 3fr 1fr;
+  gap: $space-m;
+  justify-items: center;
+  align-items: center;
+  padding: $space-m;
+  width: 100%;
+  max-width: $cart-product-max-width;
+  border-radius: $border-radius;
+  background-color: $card-bg;
+  box-shadow: $card-shadow;
+  transition: box-shadow 0.3s ease-in-out;
+
+  @media (max-width: $breakpoint-m) {
+    grid-template-areas:
+      'image content content'
+      'image price counter';
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    justify-items: start;
+    align-items: center;
+    padding: $space-s;
+  }
+
+  @media (max-width: $breakpoint-s) {
+    grid-template-areas:
+      'image image'
+      'content price'
+      'counter counter';
+    grid-template-columns: auto auto;
+    grid-template-rows: 1fr auto auto;
+    justify-items: center;
+    align-items: center;
+    padding: $space-s;
+  }
+
+  &:hover {
+    box-shadow: $card-shadow-hover;
+  }
+
+  &-image {
+    grid-area: image;
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: fill;
+    background-color: $card-image-bg;
+  }
+
+  &-content {
+    grid-area: content;
+    display: flex;
+    flex-direction: column;
+    gap: $space-xs;
+
+    @media (max-width: $breakpoint-s) {
+      gap: 0;
+    }
+  }
+
+  &-price {
+    grid-area: price;
+  }
+
+  &-counter {
+    grid-area: counter;
+  }
+
+  &_remove {
+    grid-area: remove;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    @media (max-width: $breakpoint-m) {
+      display: none;
+    }
+  }
+}

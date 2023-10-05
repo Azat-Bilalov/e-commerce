@@ -1,0 +1,34 @@
+@use '@configs/styles/variables.scss' as *;
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  gap: $space-l;
+  justify-content: center;
+  align-items: center;
+  padding: $space-m;
+  transition: opacity 0.3s ease-in-out;
+
+  &-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: $space-s;
+  }
+
+  &-content {
+    display: flex;
+    flex-direction: column;
+    gap: $space-s;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: $space-s;
+  }
+}

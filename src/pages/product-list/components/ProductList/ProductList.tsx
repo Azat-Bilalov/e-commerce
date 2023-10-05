@@ -1,10 +1,13 @@
 import React from 'react';
+import classnames from 'classnames';
 import { useSearchParams } from 'react-router-dom';
 import Text, { TextView, TextWeight, TextColor } from '@/components/Text';
 import ProductCard from '../ProductCard';
 import InfinityScroll from '../InfinityScroll';
 import { observer } from 'mobx-react-lite';
 import { useProducts } from '@/store/ProductsStore/ProductsProvider';
+import AddToCartModal from '../AddToCartModal';
+import { ProductModel } from '@/store/models/products';
 
 import styles from './ProductList.module.scss';
 
@@ -15,6 +18,19 @@ const ProductList: React.FC<ProductListProps> = () => {
   const { products, total, meta, endOfList, setParams, loadMoreProducts } =
     store.productsListStore;
 
+  const [productForCart, setProductForCart] =
+    React.useState<ProductModel | null>(null);
+
+  const handleOpenModal = React.useCallback((product: ProductModel) => {
+    setProductForCart(product);
+  }, []);
+
+  const handleCloseModal = React.useCallback(() => {
+    setProductForCart(null);
+  }, []);
+
+  /** получаем параметры поиска из строки */
+  // todo: вынести в отдельный стор
   const [searchParams] = useSearchParams();
 
   React.useEffect(() => {
@@ -45,6 +61,7 @@ const ProductList: React.FC<ProductListProps> = () => {
           {total}
         </Text>
       </div>
+      <AddToCartModal product={productForCart} onClose={handleCloseModal} />
       <InfinityScroll
         meta={meta}
         endOfList={endOfList}
@@ -52,7 +69,11 @@ const ProductList: React.FC<ProductListProps> = () => {
         className={styles.productsItems}
       >
         {products.order.map((id) => (
-          <ProductCard key={id} product={products.entities[id]} />
+          <ProductCard
+            onAddToCart={handleOpenModal}
+            key={id}
+            product={products.entities[id]}
+          />
         ))}
       </InfinityScroll>
     </div>
