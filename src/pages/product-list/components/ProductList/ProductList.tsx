@@ -1,6 +1,4 @@
 import React from 'react';
-import classnames from 'classnames';
-import { useSearchParams } from 'react-router-dom';
 import Text, { TextView, TextWeight, TextColor } from '@/components/Text';
 import ProductCard from '../ProductCard';
 import InfinityScroll from '../InfinityScroll';
@@ -15,7 +13,7 @@ export type ProductListProps = {};
 
 const ProductList: React.FC<ProductListProps> = () => {
   const store = useProducts();
-  const { products, total, meta, endOfList, setParams, loadMoreProducts } =
+  const { products, total, meta, endOfList, loadMoreProducts } =
     store.productsListStore;
 
   const [productForCart, setProductForCart] =
@@ -28,26 +26,6 @@ const ProductList: React.FC<ProductListProps> = () => {
   const handleCloseModal = React.useCallback(() => {
     setProductForCart(null);
   }, []);
-
-  /** получаем параметры поиска из строки */
-  // todo: вынести в отдельный стор
-  const [searchParams] = useSearchParams();
-
-  React.useEffect(() => {
-    const search = searchParams.get('search') || '';
-    const categories = searchParams.get('categories') || '';
-    const minPrice = searchParams.get('min_price') || '';
-    const maxPrice = searchParams.get('max_price') || '';
-    const sort = searchParams.get('sort') || '';
-
-    setParams({
-      substring: search,
-      include: categories,
-      min: minPrice,
-      max: maxPrice,
-      sort,
-    });
-  }, [searchParams]);
 
   return (
     <div className={styles.products}>

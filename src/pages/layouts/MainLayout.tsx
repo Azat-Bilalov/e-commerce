@@ -6,11 +6,14 @@ import Text, {
   TextWeight,
   TextColor,
 } from '@components/Text';
+import { useQueryParamsStoreInit } from '@/store/RootStore/QueryStore/useQueryParamsStoreInit';
 
 import svgIcon from '@assets/svg/icon.svg';
 import styles from './MainLayout.module.scss';
 
 const MainLayout = () => {
+  useQueryParamsStoreInit();
+
   return (
     <>
       <header className={styles.header}>

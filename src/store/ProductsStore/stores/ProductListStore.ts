@@ -8,10 +8,13 @@ import {
 import { ProductApi, ProductModel } from '../../models/products/product';
 import {
   action,
+  autorun,
   computed,
   makeObservable,
   observable,
+  reaction,
   runInAction,
+  toJS,
 } from 'mobx';
 import {
   GetProductsListParams,
@@ -20,6 +23,9 @@ import {
 } from './types';
 import { api } from '@/configs';
 import { Axios, AxiosHeaders } from 'axios';
+import { CategoriesFilterStore } from './CategoriesFilterStore';
+import rootStore from '@/store/RootStore/instance';
+import { QueryModel, denormalizeQuery } from '@/store/models/query';
 
 const PRODUCT_PER_PAGE = 12;
 
@@ -51,7 +57,7 @@ export class ProductListStore implements ILocalStore {
       minPrice: computed,
       maxPrice: computed,
       endOfList: computed,
-      setParams: action.bound,
+      // setParams: action.bound,
       getProductList: action.bound,
       loadMoreProducts: action.bound,
     });
@@ -81,21 +87,17 @@ export class ProductListStore implements ILocalStore {
     return this._endOfList;
   }
 
-  /** При изменении параметров запроса, обновляем список */
-  setParams(params: GetQueryParams) {
-    this._params = params;
-
-    // side effects
-    this._endOfList = false;
-    this._products = getEmptyCollection();
-    this.loadMoreProducts();
-  }
-
   /** Общая функция для получения списка продуктов */
-  async getProductList(params: GetProductsListParams) {
+  async getProductList(offset: number, limit: number) {
     if (this._endOfList) return;
 
     this._meta = Meta.Loading;
+
+    const params = {
+      ...denormalizeQuery(this._params),
+      offset,
+      limit,
+    };
 
     const productsResponse = await api.get<ProductApi[]>('products', {
       params: params,
@@ -139,14 +141,29 @@ export class ProductListStore implements ILocalStore {
     });
   }
 
+  /** Изначальная загрузка продуктов */
+  async loadProducts() {
+    this._endOfList = false;
+    await this.getProductList(0, PRODUCT_PER_PAGE);
+  }
+
   /** Загрузка дополнительных продуктов */
   async loadMoreProducts() {
     const offset = this._products.order.length;
     const limit = PRODUCT_PER_PAGE;
-    const params = { ...this._params, offset, limit };
 
-    await this.getProductList(params);
+    await this.getProductList(offset, limit);
   }
 
-  destroy() {}
+  private readonly reactionDisposer = reaction(
+    () => rootStore.query.getParams,
+    (params) => {
+      this._params = params;
+      this.loadProducts();
+    },
+  );
+
+  destroy() {
+    this.reactionDisposer();
+  }
 }

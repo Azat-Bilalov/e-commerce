@@ -1,5 +1,6 @@
 import React from 'react';
 import RootStore from './RootStore';
+import rootStore from './instance';
 
 export const RootStoreContext = React.createContext<RootStore | null>(null);
 
@@ -7,8 +8,8 @@ export type RootStoreProviderProps = {
   children: React.ReactNode;
 };
 
-const ProductsProvider: React.FC<RootStoreProviderProps> = ({ children }) => {
-  const rootStore = React.useMemo(() => new RootStore(), []);
+const RootStoreProvider: React.FC<RootStoreProviderProps> = ({ children }) => {
+  // const rootStore = React.useMemo(() => new RootStore(), []);
 
   return (
     <RootStoreContext.Provider value={rootStore}>
@@ -26,4 +27,4 @@ export const useRootStore = () => {
   return context;
 };
 
-export default ProductsProvider;
+export default RootStoreProvider;
