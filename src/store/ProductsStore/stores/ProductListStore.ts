@@ -4,8 +4,8 @@ import {
   CollectionModel,
   getEmptyCollection,
   normalizeCollection,
-} from '../models/shared/collection';
-import { ProductApi, ProductModel } from '../models/products/product';
+} from '../../models/shared/collection';
+import { ProductApi, ProductModel } from '../../models/products/product';
 import {
   action,
   computed,
@@ -35,10 +35,10 @@ export class ProductListStore implements ILocalStore {
       _endOfList: observable,
       meta: computed,
       products: computed,
+      endOfList: computed,
       setParams: action.bound,
       getProductList: action.bound,
       loadMoreProducts: action.bound,
-      loadProductsForPage: action.bound,
     });
   }
 
@@ -57,6 +57,8 @@ export class ProductListStore implements ILocalStore {
   /** При изменении параметров запроса, обновляем список */
   setParams(params: GetQueryParams) {
     this._params = params;
+
+    // side effects
     this._endOfList = false;
     this._products = getEmptyCollection();
     this.loadMoreProducts();
@@ -73,10 +75,12 @@ export class ProductListStore implements ILocalStore {
     });
 
     runInAction(() => {
+      if (productsResponse.status !== 200) {
+        this._meta = Meta.Error;
+        return;
+      }
+
       try {
-        if (productsResponse.status !== 200) {
-          throw new Error(productsResponse.statusText);
-        }
         if (productsResponse.data.length < PRODUCT_PER_PAGE) {
           this._endOfList = true;
         }
@@ -113,16 +117,5 @@ export class ProductListStore implements ILocalStore {
     await this.getProductList(params);
   }
 
-  /** Загрузка продуктов до определенной страницы */
-  async loadProductsForPage(page: number) {
-    const offset = 0;
-    const limit = PRODUCT_PER_PAGE * page;
-    const params = { ...this._params, offset, limit };
-
-    await this.getProductList(params);
-  }
-
-  destroy() {
-    console.log('ProductsStore.destroy');
-  }
+  destroy() {}
 }

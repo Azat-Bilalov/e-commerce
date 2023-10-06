@@ -25,12 +25,14 @@ export default class ProductStore implements ILocalStore {
     this._productId = id;
 
     makeObservable<ProductStore, PrivateFields>(this, {
-      _product: observable,
+      _product: observable.ref,
       _meta: observable,
       meta: computed,
       product: computed,
-      getProduct: action.bound,
+      fetchProduct: action.bound,
     });
+
+    this.fetchProduct();
   }
 
   get product() {
@@ -41,26 +43,27 @@ export default class ProductStore implements ILocalStore {
     return this._meta;
   }
 
-  async getProduct() {
+  async fetchProduct() {
     this._meta = Meta.Loading;
 
-    try {
-      const productsResponse = await api.get<ProductApi>(
-        `products/${this._productId}`,
-      );
+    const productsResponse = await api.get<ProductApi>(
+      `products/${this._productId}`,
+    );
 
-      runInAction(() => {
-        if (productsResponse.status !== 200) {
-          throw new Error(productsResponse.statusText);
-        }
+    runInAction(() => {
+      if (productsResponse.status !== 200) {
+        this._meta = Meta.Error;
+        return;
+      }
 
+      try {
         this._product = normalizeProduct(productsResponse.data);
         this._meta = Meta.Success;
-      });
-    } catch (err) {
-      console.log(err);
-      this._meta = Meta.Error;
-    }
+      } catch (err) {
+        console.log(err);
+        this._meta = Meta.Error;
+      }
+    });
   }
 
   destroy() {}
