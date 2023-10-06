@@ -1,7 +1,8 @@
 import React from 'react';
+import 'rc-slider/assets/index.css';
 import MultiDropdown from '@/components/MultiDropdown';
 import { Option } from '@/components/MultiDropdown';
-import { useProducts } from '@/store/ProductsStore/ProductsProvider';
+import { useCategoriesFilterStore } from '@/store/CategoriesFilterStore';
 import { useSearchParams } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 
@@ -10,8 +11,7 @@ type FilterProps = {
 };
 
 const Filter: React.FC<FilterProps> = ({ className }) => {
-  const store = useProducts();
-  const { options, filter, setFilter } = store.categoriesFilterStore;
+  const { options, filter, setFilter } = useCategoriesFilterStore();
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -31,18 +31,21 @@ const Filter: React.FC<FilterProps> = ({ className }) => {
   }, [searchParams, options]);
 
   /** устанавливаем активные категории */
-  const handleChange = React.useCallback((options: Option[]) => {
-    setFilter(options);
-    const newQueryKeys = options.map((option) => option.key).join('|');
+  const handleChange = React.useCallback(
+    (options: Option[]) => {
+      setFilter(options);
+      const newQueryKeys = options.map((option) => option.key).join('|');
 
-    if (newQueryKeys) {
-      searchParams.set('categories', newQueryKeys);
-      setSearchParams(searchParams);
-    } else {
-      searchParams.delete('categories');
-      setSearchParams(searchParams);
-    }
-  }, []);
+      if (newQueryKeys) {
+        searchParams.set('categories', newQueryKeys);
+        setSearchParams(searchParams);
+      } else {
+        searchParams.delete('categories');
+        setSearchParams(searchParams);
+      }
+    },
+    [searchParams],
+  );
 
   /** функция отображения в фильтре */
   const getTitle = React.useCallback(() => {

@@ -1,18 +1,58 @@
 @use '@configs/styles/variables.scss' as *;
 
+$header-link-color: $text-primary;
+$header-link-active-color: $text-accent;
+$header-link-active-weight: 600;
+
 .header {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-areas: 'brand nav cart';
+  gap: $space-l;
   align-items: center;
   padding: $header-padding;
   background: $header-bg;
   border-bottom: 2px solid $header-line-color;
 
+  @media (max-width: $breakpoint-m) {
+    grid-template-areas: 'brand cart' 'nav nav';
+  }
+
   &-brand {
+    grid-area: brand;
     display: flex;
     align-items: center;
     text-decoration: none;
     gap: $space-xs;
+  }
+
+  &-nav {
+    grid-area: nav;
+    justify-self: center;
+    display: flex;
+    gap: $space-xl;
+
+    @media (max-width: $breakpoint-s) {
+      gap: $space-m;
+    }
+
+    &-link {
+      color: $header-link-color;
+      text-decoration: none;
+
+      &_active {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        color: $header-link-active-color;
+        font-weight: $header-link-active-weight;
+        border-bottom: 2px solid $header-link-active-color;
+      }
+    }
+  }
+
+  &-cart {
+    grid-area: cart;
+    justify-self: end;
   }
 }
 

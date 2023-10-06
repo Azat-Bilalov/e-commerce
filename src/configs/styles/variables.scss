@@ -6,8 +6,15 @@ $space-m: 16px;
 $space-l: 20px;
 $space-xl: 48px;
 
+/** breakpoints */
+$breakpoint-xs: 320px;
+$breakpoint-s: 480px;
+$breakpoint-m: 768px;
+$breakpoint-l: 1024px;
+$breakpoint-xl: 1200px;
+
 /** layout */
-$bg: #fafafa;
+$app-bg: #fafafa;
 $header-bg: #fff;
 $header-padding: 24px 7vw;
 $header-line-color: #f3f3f3;
@@ -52,6 +59,8 @@ $card-bg: #fff;
 $card-image-bg: #d9d9d9;
 $card-max-width: 360px;
 $card-min-width: 300px;
+$card-shadow: none;
+$card-shadow-hover: 0px 4px 10px 0px rgba(0, 0, 0, 0.25);
 
 /** inputs */
 $input-bg: #fff;
@@ -74,7 +83,6 @@ $checkbox-check: #518581;
 $checkbox-bg-hover: #fff;
 $checkbox-border-hover: #518581;
 $checkbox-check-hover: #518581;
-
 $checkbox-bg-disabled: #f6f5f5;
 $checkbox-border-disabled: #f6f5f5;
 $checkbox-check-disabled: #00000033;

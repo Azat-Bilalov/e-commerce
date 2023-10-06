@@ -1,0 +1,33 @@
+@use '@configs/styles/variables.scss' as *;
+
+.checkout-form {
+  display: grid;
+  grid-template-areas: 'number number' 'name name' 'date cvv' 'button button';
+  gap: $space-l;
+
+  @media (max-width: $breakpoint-s) {
+    grid-template-areas: 'number' 'name' 'date' 'cvv' 'button';
+  }
+
+  &-number {
+    grid-area: number;
+  }
+
+  &-name {
+    grid-area: name;
+  }
+
+  &-date {
+    grid-area: date;
+  }
+
+  &-cvv {
+    grid-area: cvv;
+  }
+
+  &-button {
+    grid-area: button;
+    justify-self: center;
+    width: fit-content;
+  }
+}

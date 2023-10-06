@@ -1,0 +1,10 @@
+@use '@configs/styles/variables.scss' as *;
+
+$empty-cart-bg: rgba(0, 0, 0, 0.05);
+$empty-cart-height: 50vh;
+
+.category-list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-m;
+}

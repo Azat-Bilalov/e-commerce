@@ -25,6 +25,8 @@ export type MultiDropdownProps = {
   disabled?: boolean;
   /** Возвращает строку которая будет выводится в инпуте. В случае если опции не выбраны, строка должна отображаться как placeholder. */
   getTitle: (value: Option[]) => string;
+  /** Максимальное количество выбранных опций */
+  maxSelected?: number;
 };
 
 const MultiDropdown: React.FC<MultiDropdownProps> = ({
@@ -34,6 +36,7 @@ const MultiDropdown: React.FC<MultiDropdownProps> = ({
   onChange,
   disabled,
   getTitle,
+  maxSelected,
 }: MultiDropdownProps) => {
   const cnDropdown = cn(
     styles.dropdown,
@@ -131,6 +134,9 @@ const MultiDropdown: React.FC<MultiDropdownProps> = ({
                         ),
                       );
                     } else {
+                      if (maxSelected && value.length >= maxSelected) {
+                        return onChange([...value.slice(1), option]);
+                      }
                       onChange([...value, option]);
                     }
                   }}

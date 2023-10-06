@@ -1,0 +1,10 @@
+@use '@configs/styles/variables.scss' as *;
+
+.category-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $space-xl;
+  max-width: $breakpoint-l;
+}

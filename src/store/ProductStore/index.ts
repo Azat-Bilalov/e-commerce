@@ -1,1 +1,2 @@
-export { default } from './ProductStore';
+export { default } from './ProductStoreProvider';
+export * from './ProductStoreProvider';

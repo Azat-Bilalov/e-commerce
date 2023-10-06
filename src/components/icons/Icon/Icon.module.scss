@@ -2,14 +2,21 @@
 
 .icon_stroke_primary {
   stroke: $icon-primary;
+  color: $icon-primary;
 }
 
 .icon_stroke_secondary {
   stroke: $icon-secondary;
+  color: $icon-secondary;
 }
 
 .icon_stroke_accent {
   stroke: $icon-accent;
+  color: $icon-accent;
+}
+
+.icon_stroke_white {
+  stroke: #fff;
 }
 
 .icon_fill_primary {
@@ -22,4 +29,8 @@
 
 .icon_fill_accent {
   fill: $icon-accent;
+}
+
+.icon_fill_white {
+  fill: #fff;
 }

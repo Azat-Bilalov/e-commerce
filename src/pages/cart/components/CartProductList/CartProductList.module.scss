@@ -1,0 +1,24 @@
+@use '@configs/styles/variables.scss' as *;
+
+$empty-cart-bg: rgba(0, 0, 0, 0.05);
+$empty-cart-height: 50vh;
+
+.cart-product-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-m;
+  width: 100%;
+  margin-top: $space-l;
+
+  &_empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: $space-s;
+    height: $empty-cart-height;
+    width: 100%;
+    background-color: $empty-cart-bg;
+  }
+}

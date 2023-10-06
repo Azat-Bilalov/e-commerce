@@ -1,0 +1,19 @@
+@use '@configs/styles/variables.scss' as *;
+
+.price-slider {
+  display: grid;
+  grid-template-areas: 'min max' 'slider slider';
+  gap: $space-xxs;
+
+  &-control {
+    grid-area: slider;
+  }
+
+  &-min {
+    grid-area: min;
+  }
+
+  &-max {
+    grid-area: max;
+  }
+}

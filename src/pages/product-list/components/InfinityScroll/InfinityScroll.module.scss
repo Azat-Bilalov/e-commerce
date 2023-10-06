@@ -21,4 +21,14 @@ $error-color: #9f4f4f;
     margin-top: $space-xl;
     color: $error-color;
   }
+
+  &-cards-loader {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    column-gap: $space-xl;
+    justify-items: center;
+    margin-top: $space-l;
+    height: 606px;
+    overflow: hidden;
+  }
 }

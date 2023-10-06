@@ -2,7 +2,7 @@ import * as React from 'react';
 
 export type IconProps = React.SVGAttributes<SVGElement> & {
   className?: string;
-  color?: 'primary' | 'secondary' | 'accent';
+  color?: 'primary' | 'secondary' | 'accent' | 'white';
 };
 
 const Icon: React.FC<React.PropsWithChildren<IconProps>> = ({
