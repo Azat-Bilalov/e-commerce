@@ -1,0 +1,44 @@
+@use '@configs/styles/variables.scss' as *;
+
+.input {
+  display: flex;
+  color: $input-text;
+  width: 100%;
+  padding: $space-s $space-xs;
+  align-items: center;
+  gap: $space-xxs;
+  flex-shrink: 0;
+  border: 1px solid $input-border;
+  background: var(--input-bg);
+  cursor: text;
+
+  &_focused {
+    background-color: $input-bg-focus;
+    border-color: $input-border-focus;
+    color: $input-text-focus;
+  }
+
+  &-field {
+    height: 24px;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    border: none;
+    width: 100%;
+    padding: 0;
+
+    &:focus {
+      outline: none;
+    }
+
+    &:disabled {
+      color: $input-text-disabled;
+      background-color: $input-bg-disabled;
+    }
+
+    &::placeholder {
+      color: $input-placeholder;
+    }
+  }
+}

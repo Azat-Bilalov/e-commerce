@@ -1,8 +1,8 @@
 import React from 'react';
-import { cn } from '@bem-react/classname';
+import cn from 'classnames';
 import CheckIcon from '../icons/CheckIcon';
 
-import './CheckBox.scss';
+import styles from './CheckBox.module.scss';
 
 export type CheckBoxProps = Omit<
   React.InputHTMLAttributes<HTMLInputElement>,
@@ -17,28 +17,34 @@ const CheckBox: React.FC<CheckBoxProps> = ({
   checked,
   ...props
 }) => {
-  const cnCheckbox = cn('checkbox');
+  const cnCheckboxIcon = cn(styles.icon, {
+    [styles.iconDisabled]: disabled,
+    [styles.iconChecked]: checked,
+  });
 
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const isChecked = e.target.checked;
-    onChange(isChecked);
-  };
+  const handleCheckboxChange = React.useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const isChecked = e.target.checked;
+      onChange(isChecked);
+    },
+    [onChange],
+  );
 
   return (
-    <label className={cnCheckbox('label')}>
+    <label styleName={cn(styles.checkbox)}>
       <input
         type="checkbox"
-        className={cnCheckbox('input')}
+        styleName={styles.input}
         onChange={handleCheckboxChange}
         disabled={disabled}
         checked={checked}
         {...props}
       />
-      <span className={cnCheckbox('icon', { disabled, checked })}>
+      <span styleName={cnCheckboxIcon}>
         <CheckIcon width={40} height={40} />
       </span>
     </label>
   );
 };
 
-export default CheckBox;
+export default React.memo(CheckBox);

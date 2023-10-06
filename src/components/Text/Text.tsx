@@ -1,21 +1,21 @@
 import * as React from 'react';
-import { cn } from '@bem-react/classname';
-
-import './Text.scss';
+import cn from 'classnames';
+import { TextTag, TextView, TextWeight, TextColor } from './config';
+import styles from './Text.module.scss';
 
 export type TextProps = {
   /** Дополнительный класс */
   className?: string;
   /** Стиль отображения */
-  view?: 'title' | 'button' | 'p-20' | 'p-18' | 'p-16' | 'p-14';
+  view?: TextView;
   /** Html-тег */
-  tag?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'div' | 'p' | 'span';
+  tag?: TextTag;
   /** Начертание шрифта */
-  weight?: 'normal' | 'medium' | 'bold';
+  weight?: TextWeight;
   /** Контент */
   children: React.ReactNode;
   /** Цвет */
-  color?: 'primary' | 'secondary' | 'accent';
+  color?: TextColor;
   /** Максимальное кол-во строк */
   maxLines?: number;
 };
@@ -23,7 +23,7 @@ export type TextProps = {
 const Text: React.FC<TextProps> = ({
   className,
   view,
-  tag = 'p',
+  tag = TextTag.P,
   weight,
   color,
   maxLines,
@@ -31,15 +31,22 @@ const Text: React.FC<TextProps> = ({
 }: TextProps) => {
   const Tag = tag as keyof JSX.IntrinsicElements;
 
-  const classes = cn('text')({ view, weight, color, 'cut-text': !!maxLines }, [
+  const cnText = cn(
+    styles.text,
+    {
+      [styles[`text_view_${view}`]]: view,
+      [styles[`text_weight_${weight}`]]: weight,
+      [styles[`text_color_${color}`]]: color,
+      [styles['text_cuted']]: maxLines && maxLines > 0,
+    },
     className,
-  ]);
+  );
 
   const isCutText = maxLines && maxLines > 0;
 
   return (
     <Tag
-      className={classes}
+      className={cnText}
       style={isCutText ? { WebkitLineClamp: maxLines } : {}}
     >
       {children}
@@ -47,4 +54,4 @@ const Text: React.FC<TextProps> = ({
   );
 };
 
-export default Text;
+export default React.memo(Text);

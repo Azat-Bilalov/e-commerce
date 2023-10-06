@@ -14,6 +14,5 @@ export interface Product {
   images: string[];
   creationAt: string;
   updatedAt: string;
-  // category: Category;
   category: string;
 }

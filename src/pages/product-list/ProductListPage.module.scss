@@ -1,0 +1,50 @@
+@use '@configs/styles/variables.scss' as *;
+
+$hero-pt: 40px;
+$hero-pb: 48px;
+$hero-width: 643px;
+$filter-width: 300px;
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: $space-m;
+  text-align: center;
+  align-items: center;
+  padding-top: $hero-pt;
+  padding-bottom: $hero-pb;
+
+  & > * {
+    max-width: $hero-width;
+  }
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: $space-m;
+
+  &-filter {
+    max-width: $filter-width;
+  }
+}
+
+.products {
+  margin-top: $space-xl;
+
+  &-title {
+    display: flex;
+    gap: $space-m;
+    align-items: center;
+    margin-bottom: $space-l;
+  }
+
+  &-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    row-gap: $space-l;
+    column-gap: $space-xl;
+    align-items: stretch;
+    justify-items: center;
+  }
+}

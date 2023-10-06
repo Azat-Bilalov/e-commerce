@@ -1,11 +1,16 @@
 import { RouterProvider } from 'react-router-dom';
 import Router from './Router';
-import './App.css';
+import SessionProvider from './SessionProvider';
+import '@/configs/configureMobX';
+
+import styles from './App.module.scss';
 
 function App() {
   return (
-    <div className="App">
-      <RouterProvider router={Router} />
+    <div className={styles.app}>
+      <SessionProvider>
+        <RouterProvider router={Router} />
+      </SessionProvider>
     </div>
   );
 }

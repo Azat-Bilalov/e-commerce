@@ -1,0 +1,21 @@
+@use '@configs/styles/variables.scss' as *;
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $header-padding;
+  background: $header-bg;
+  border-bottom: 2px solid $header-line-color;
+
+  &-brand {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    gap: $space-xs;
+  }
+}
+
+.content {
+  margin: $content-margin;
+}

@@ -1,0 +1,11 @@
+@use '@configs/styles/variables.scss' as *;
+
+.error-page {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-m;
+  justify-content: center;
+}

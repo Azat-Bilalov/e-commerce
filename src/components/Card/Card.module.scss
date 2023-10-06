@@ -1,0 +1,47 @@
+@use '@configs/styles/variables.scss' as *;
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: $space-xl;
+  max-width: $card-max-width;
+  min-width: $card-min-width;
+  width: 100%;
+  background-color: #fff;
+  padding-bottom: $space-xl;
+  border-radius: $border-radius;
+  transition: box-shadow 300ms;
+
+  &:hover {
+    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.25);
+  }
+
+  &-image {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    background: $card-image-bg;
+    border-radius: $border-radius;
+  }
+
+  &-body {
+    display: flex;
+    flex-direction: column;
+    gap: $space-l;
+    padding: 0 $space-xs;
+  }
+
+  &-content-slot {
+    display: flex;
+    flex-direction: column;
+    gap: $space-xxs;
+  }
+
+  &-action-slot {
+    display: flex;
+    flex-direction: row;
+    gap: $space-xxs;
+    justify-content: space-between;
+    align-items: center;
+  }
+}

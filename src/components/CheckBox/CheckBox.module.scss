@@ -1,0 +1,38 @@
+.checkbox {
+  &-input {
+    visibility: hidden;
+  }
+
+  &-label {
+    display: inline-block;
+    position: relative;
+    width: 40px;
+    height: 40px;
+  }
+
+  &-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 40px;
+    background-color: $checkbox-bg;
+    border: 1px solid $checkbox-border;
+    color: $checkbox-check;
+
+    &:hover:not(&_disabled) {
+      background-color: $checkbox-bg-hover;
+      border: 1px solid $checkbox-border-hover;
+    }
+
+    &_disabled {
+      background-color: $checkbox-bg-disabled;
+      color: $checkbox-check-disabled;
+      border: 1px solid $checkbox-border-disabled;
+    }
+
+    &:not(&_checked) > * {
+      display: none;
+    }
+  }
+}
