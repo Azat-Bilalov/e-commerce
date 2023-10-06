@@ -24,7 +24,7 @@ const SummaryBar: React.FC<SummaryBarProps> = ({ className }) => {
       rootStore.cart.products.order.reduce((acc, id) => {
         const product = rootStore.cart.products.entities[id];
         if (!product) return acc;
-        return acc + product.price * product.count;
+        return acc + product.price * product.count * (1 - product.discount);
       }, 0),
     [rootStore.cart.products],
   );

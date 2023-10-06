@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 import Slider from 'rc-slider';
 import Input from '@/components/Input';
 import Button from '@/components/Button';
-import { useProducts } from '@/store/ProductsStore/ProductsProvider';
+import { useProductListStore } from '@/store/ProductListStore';
 
 import 'rc-slider/assets/index.css';
 import styles from './PriceSlider.module.scss';
@@ -18,8 +18,7 @@ const PriceSlider: React.FC<PriceSliderProps> = ({ className }) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   /** Получение максимальной и минимальной цены из запроса */
-  const store = useProducts();
-  const { minPrice, maxPrice } = store.productsListStore;
+  const { minPrice, maxPrice } = useProductListStore();
 
   /** Хранение текущих значений слайдера */
   const [minPriceValue, setMinPriceValue] = React.useState(0);

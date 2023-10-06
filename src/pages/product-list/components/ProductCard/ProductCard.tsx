@@ -5,6 +5,7 @@ import Card from '@/components/Card';
 import Button from '@/components/Button/Button';
 import { observer } from 'mobx-react-lite';
 import { useRootStore } from '@/store/RootStore/RootStoreProvider';
+import Text, { TextColor, TextTag } from '@/components/Text';
 
 type ProductCardProps = {
   product: ProductModel;
@@ -39,7 +40,20 @@ const ProductCard: React.FC<ProductCardProps> = ({
       title={product.title}
       subtitle={product.description}
       image={product.images[0]}
-      contentSlot={`$${product.price}`}
+      contentSlot={
+        product.discount !== 0 ? (
+          <>
+            <Text tag={TextTag.Span} color={TextColor.Secondary}>
+              <s>${product.price}</s>
+            </Text>{' '}
+            <Text tag={TextTag.Span}>
+              ${(product.price * (1 - product.discount)).toFixed(2)}
+            </Text>
+          </>
+        ) : (
+          <Text tag={TextTag.Span}>${product.price}</Text>
+        )
+      }
       onClick={navToMore}
       actionSlot={
         rootStore.cart.products.order.includes(product.id) ? (

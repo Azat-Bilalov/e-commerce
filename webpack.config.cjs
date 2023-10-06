@@ -74,6 +74,8 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, './index.html'),
+      publicPath: isProd ? '/e-commerce/' : '/',
+      favicon: path.resolve(__dirname, 'public', './lalasia.svg'),
     }),
     !isProd && new ReactRefreshWebpackPlugin(),
     new MiniCssExtractPlugin({

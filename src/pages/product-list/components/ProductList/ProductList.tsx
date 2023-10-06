@@ -3,7 +3,7 @@ import Text, { TextView, TextWeight, TextColor } from '@/components/Text';
 import ProductCard from '../ProductCard';
 import InfinityScroll from '../InfinityScroll';
 import { observer } from 'mobx-react-lite';
-import { useProducts } from '@/store/ProductsStore/ProductsProvider';
+import { useProductListStore } from '@/store/ProductListStore';
 import AddToCartModal from '../AddToCartModal';
 import { ProductModel } from '@/store/models/products';
 
@@ -12,9 +12,8 @@ import styles from './ProductList.module.scss';
 export type ProductListProps = {};
 
 const ProductList: React.FC<ProductListProps> = () => {
-  const store = useProducts();
   const { products, total, meta, endOfList, loadMoreProducts } =
-    store.productsListStore;
+    useProductListStore();
 
   const [productForCart, setProductForCart] =
     React.useState<ProductModel | null>(null);

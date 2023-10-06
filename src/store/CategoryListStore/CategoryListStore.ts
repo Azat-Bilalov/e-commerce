@@ -1,12 +1,6 @@
 import { Meta } from '@/utils/meta';
 import { ILocalStore } from '@/utils/useLocalStore';
 import {
-  CollectionModel,
-  getEmptyCollection,
-  normalizeCollection,
-} from '../../models/shared/collection';
-import { CategoryApi, CategoryModel } from '../../models/products/category';
-import {
   action,
   computed,
   makeObservable,
@@ -14,52 +8,44 @@ import {
   runInAction,
 } from 'mobx';
 import { api } from '@/configs';
-import { Option } from '@/components/MultiDropdown';
+import {
+  CollectionModel,
+  getEmptyCollection,
+  normalizeCollection,
+} from '../models/shared/collection';
+import {
+  CategoryApi,
+  CategoryModel,
+  normalizeCategory,
+} from '../models/products';
 
-type PrivateFields = '_categories' | '_meta' | '_filter';
+type PrivateFields = '_categories' | '_meta';
 
-export class CategoriesFilterStore implements ILocalStore {
+export default class CategoryListStore implements ILocalStore {
   private _categories: CollectionModel<number, CategoryModel> =
     getEmptyCollection();
   private _meta = Meta.Initial;
-  private _filter: Option[] = [];
 
   constructor() {
-    makeObservable<CategoriesFilterStore, PrivateFields>(this, {
+    makeObservable<CategoryListStore, PrivateFields>(this, {
       _categories: observable.ref,
       _meta: observable,
-      _filter: observable.ref,
-      options: computed,
       meta: computed,
-      filter: computed,
-      setFilter: action.bound,
+      categories: computed,
       fetchCategories: action.bound,
     });
 
     this.fetchCategories();
   }
 
-  /** возращает массив объектов для отображения в фильтре */
-  get options() {
-    return this._categories.order.map((key) => ({
-      key: String(key),
-      value: this._categories.entities[key].name,
-    }));
+  get categories() {
+    return this._categories;
   }
 
   get meta() {
     return this._meta;
   }
 
-  get filter() {
-    return this._filter;
-  }
-
-  setFilter(value: Option[]) {
-    this._filter = value;
-  }
-
-  /** Загружает категории */
   async fetchCategories() {
     this._meta = Meta.Loading;
 
@@ -73,11 +59,12 @@ export class CategoriesFilterStore implements ILocalStore {
 
       try {
         const categoriesCollection = normalizeCollection(
-          categoriesResponse.data,
+          categoriesResponse.data.map(normalizeCategory),
           (category) => category.id,
         );
 
         this._categories = categoriesCollection;
+
         this._meta = Meta.Success;
       } catch (err) {
         console.error(err);

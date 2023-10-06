@@ -57,6 +57,6 @@ export default class CartStore {
   }
 
   clear() {
-    localStorage.setItem('cartProducts', JSON.stringify(this._products));
+    localStorage.setItem('cartProducts', JSON.stringify(getEmptyCollection()));
   }
 }

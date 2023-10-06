@@ -4,30 +4,26 @@ import {
   CollectionModel,
   getEmptyCollection,
   normalizeCollection,
-} from '../../models/shared/collection';
-import { ProductApi, ProductModel } from '../../models/products/product';
+} from '../models/shared/collection';
+import {
+  ProductApi,
+  ProductModel,
+  normalizeProduct,
+} from '../models/products/product';
 import {
   action,
-  autorun,
   computed,
   makeObservable,
   observable,
   reaction,
   runInAction,
-  toJS,
 } from 'mobx';
-import {
-  GetProductsListParams,
-  GetQueryParams,
-  ResponseHeaders,
-} from './types';
+import { GetQueryParams, ResponseHeaders } from './types';
 import { api } from '@/configs';
-import { Axios, AxiosHeaders } from 'axios';
-import { CategoriesFilterStore } from './CategoriesFilterStore';
+import { AxiosHeaders } from 'axios';
 import rootStore from '@/store/RootStore/instance';
 import { QueryModel, denormalizeQuery } from '@/store/models/query';
-
-const PRODUCT_PER_PAGE = 12;
+import { PRODUCT_PER_PAGE } from '@/configs/constants';
 
 type PrivateFields =
   | '_products'
@@ -36,7 +32,7 @@ type PrivateFields =
   | '_params'
   | '_endOfList';
 
-export class ProductListStore implements ILocalStore {
+export default class ProductListStore implements ILocalStore {
   private _products: CollectionModel<number, ProductModel> =
     getEmptyCollection();
   private _headers: ResponseHeaders | null = null;
@@ -57,7 +53,6 @@ export class ProductListStore implements ILocalStore {
       minPrice: computed,
       maxPrice: computed,
       endOfList: computed,
-      // setParams: action.bound,
       getProductList: action.bound,
       loadMoreProducts: action.bound,
     });
@@ -88,19 +83,19 @@ export class ProductListStore implements ILocalStore {
   }
 
   /** Общая функция для получения списка продуктов */
-  async getProductList(offset: number, limit: number) {
+  async getProductList(offset: number, limit: number, params?: QueryModel) {
     if (this._endOfList) return;
 
     this._meta = Meta.Loading;
 
-    const params = {
-      ...denormalizeQuery(this._params),
+    const _params = {
+      ...denormalizeQuery(params ?? this._params),
       offset,
       limit,
     };
 
     const productsResponse = await api.get<ProductApi[]>('products', {
-      params: params,
+      params: _params,
     });
 
     runInAction(() => {
@@ -119,12 +114,12 @@ export class ProductListStore implements ILocalStore {
         }
 
         const productsCollection = normalizeCollection(
-          productsResponse.data,
+          productsResponse.data.map(normalizeProduct),
           (product) => product.id,
         );
 
         this._products =
-          params?.offset !== 0
+          _params?.offset !== 0
             ? {
                 order: [...this._products.order, ...productsCollection.order],
                 entities: {
@@ -133,6 +128,7 @@ export class ProductListStore implements ILocalStore {
                 },
               }
             : productsCollection;
+
         this._meta = Meta.Success;
       } catch (err) {
         console.error(err);

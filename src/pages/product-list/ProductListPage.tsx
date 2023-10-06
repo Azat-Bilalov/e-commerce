@@ -6,13 +6,14 @@ import Sorter from './components/Sorter';
 import PriceSlider from './components/PriceSlider';
 import ResetButton from './components/ResetButton';
 import ProductList from './components/ProductList';
-import ProductsProvider from '@/store/ProductsStore/ProductsProvider';
+import ProductListProvider from '@/store/ProductListStore';
+import CategoriesFilterStoreProvider from '@/store/CategoriesFilterStore/CategoriesFilterStoreProvider';
 
 import styles from './ProductListPage.module.scss';
 
 const ProductListPage = () => {
   return (
-    <ProductsProvider>
+    <ProductListProvider>
       <div className={styles.hero}>
         <Text tag={TextTag.H1} view={TextView.Title}>
           Product List
@@ -24,13 +25,15 @@ const ProductListPage = () => {
       </div>
       <div className={styles.controls}>
         <SearchForm className={styles.controlsSearchForm} />
-        <Filter className={styles.controlsFilter} />
+        <CategoriesFilterStoreProvider>
+          <Filter className={styles.controlsFilter} />
+        </CategoriesFilterStoreProvider>
         <Sorter className={styles.controlsSorter} />
         <PriceSlider className={styles.controlsPriceSlider} />
         <ResetButton className={styles.controlsReset} />
       </div>
       <ProductList />
-    </ProductsProvider>
+    </ProductListProvider>
   );
 };
 

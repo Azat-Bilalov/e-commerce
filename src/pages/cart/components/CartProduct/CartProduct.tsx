@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Text, {
   TextTag,
   TextColor,
@@ -23,6 +24,12 @@ const CartProduct: React.FC<CartProductProps> = ({
   handleChangeCount,
   handleRemove,
 }) => {
+  const navigate = useNavigate();
+
+  const navToItem = React.useCallback(() => {
+    navigate(`/product/${product.id}`);
+  }, [product]);
+
   const handleCounterChange = React.useCallback(
     (count: number) => {
       if (count === 0) {
@@ -44,8 +51,9 @@ const CartProduct: React.FC<CartProductProps> = ({
         className={styles.cartProductImage}
         src={product.images[0]}
         alt={product.title}
+        onClick={navToItem}
       />
-      <div className={styles.cartProductContent}>
+      <div onClick={navToItem} className={styles.cartProductContent}>
         <Text
           tag={TextTag.H2}
           view={TextView.P20}
@@ -63,15 +71,39 @@ const CartProduct: React.FC<CartProductProps> = ({
           {product.category.name}
         </Text>
       </div>
-      <Text
-        className={styles.cartProductPrice}
-        tag={TextTag.H2}
-        view={TextView.P20}
-        weight={TextWeight.Bold}
-        color={TextColor.Primary}
-      >
-        ${product.price}
-      </Text>
+      {product.discount !== 0 ? (
+        <Text
+          tag={TextTag.H2}
+          view={TextView.P20}
+          weight={TextWeight.Bold}
+          className={styles.cartProductPrice}
+        >
+          <Text
+            className={styles.cartProductPrice}
+            tag={TextTag.Span}
+            color={TextColor.Secondary}
+          >
+            <s>${product.price}</s>
+          </Text>
+          <Text
+            className={styles.cartProductPrice}
+            tag={TextTag.Span}
+            color={TextColor.Primary}
+          >
+            ${(product.price * (1 - product.discount)).toFixed(2)}
+          </Text>
+        </Text>
+      ) : (
+        <Text
+          className={styles.cartProductPrice}
+          tag={TextTag.H2}
+          view={TextView.P20}
+          weight={TextWeight.Bold}
+          color={TextColor.Primary}
+        >
+          ${product.price}
+        </Text>
+      )}
       <Counter
         className={styles.cartProductCounter}
         range={[0, MAX_COUNT_IN_CART]}

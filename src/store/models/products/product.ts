@@ -1,4 +1,17 @@
 import { CategoryApi, CategoryModel, normalizeCategory } from './category';
+import { CollectionModel, normalizeCollection } from '../shared/collection';
+
+interface PriceHistoryApi {
+  price: number;
+  date: string;
+  discount: string;
+}
+
+interface PriceHistoryModel {
+  price: number;
+  date: string;
+  discount: number;
+}
 
 export interface ProductApi {
   id: number;
@@ -9,6 +22,8 @@ export interface ProductApi {
   creationAt: string;
   updatedAt: string;
   category: CategoryApi;
+  discount: number;
+  priceHistory: PriceHistoryApi[];
 }
 
 export interface ProductModel {
@@ -20,6 +35,8 @@ export interface ProductModel {
   creationAt: string;
   updatedAt: string;
   category: CategoryModel;
+  discount: number;
+  priceHistory: CollectionModel<string, PriceHistoryModel>;
 }
 
 export const normalizeProduct = (from: ProductApi): ProductModel => ({
@@ -31,4 +48,13 @@ export const normalizeProduct = (from: ProductApi): ProductModel => ({
   creationAt: from.creationAt,
   updatedAt: from.updatedAt,
   category: normalizeCategory(from.category),
+  discount: from.discount,
+  priceHistory: normalizeCollection(
+    from.priceHistory.map((priceHistory) => ({
+      price: priceHistory.price,
+      date: priceHistory.date,
+      discount: Number(priceHistory.discount),
+    })),
+    (priceHistory) => priceHistory.date,
+  ),
 });

@@ -58,6 +58,7 @@ $cart-product-max-width: 1440px;
     display: flex;
     flex-direction: column;
     gap: $space-xs;
+    text-decoration: none;
 
     @media (max-width: $breakpoint-s) {
       gap: 0;
@@ -66,6 +67,8 @@ $cart-product-max-width: 1440px;
 
   &-price {
     grid-area: price;
+    display: flex;
+    gap: $space-xxs;
   }
 
   &-counter {

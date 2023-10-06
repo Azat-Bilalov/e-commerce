@@ -1,0 +1,40 @@
+@use '@configs/styles/variables.scss' as *;
+
+.product {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  column-gap: $space-xl;
+  row-gap: $space-l;
+
+  &-carousel {
+    max-width: 600px;
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    justify-self: end;
+  }
+
+  &-content {
+    display: flex;
+    flex-direction: column;
+    gap: $space-m;
+    width: 100%;
+  }
+
+  &-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: $space-xl;
+    margin-top: clamp($space-s, 5vw, $space-xl);
+  }
+
+  &-price {
+    display: flex;
+    gap: $space-xs;
+    align-items: center;
+  }
+
+  &-button {
+    width: fit-content;
+  }
+}

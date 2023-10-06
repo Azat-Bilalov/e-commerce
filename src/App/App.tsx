@@ -10,7 +10,7 @@ type AppProps = {};
 
 const App: React.FC<AppProps> = () => {
   return (
-    <div className={styles.app}>
+    <div id="app" className={styles.app}>
       <RootStoreProvider>
         <RouterProvider router={Router} />
       </RootStoreProvider>

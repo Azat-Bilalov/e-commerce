@@ -1,5 +1,5 @@
 import qs from 'qs';
-import { action, computed, makeObservable, observable } from 'mobx';
+import { action, makeObservable, observable } from 'mobx';
 
 type PrivateFields = '_params';
 

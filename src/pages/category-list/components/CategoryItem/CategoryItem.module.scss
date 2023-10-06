@@ -1,0 +1,50 @@
+@use '@configs/styles/variables.scss' as *;
+
+.category-item {
+  display: grid;
+  grid-template-areas: 'image content icon';
+  text-decoration: none;
+  grid-template-columns: 1fr 4fr 1fr;
+  align-items: center;
+  gap: $space-l;
+  transition: box-shadow ease-in-out 0.2s;
+
+  @media (max-width: $breakpoint-s) {
+    grid-template-areas: 'image' 'content';
+    grid-template-columns: 1fr auto;
+    justify-items: center;
+    gap: $space-xs;
+  }
+
+  &:hover {
+    cursor: pointer;
+    box-shadow: $card-shadow-hover;
+    transition: box-shadow ease-in-out 0.2s;
+  }
+
+  &-image {
+    grid-area: image;
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: fill;
+    background-color: $card-image-bg;
+  }
+
+  &-content {
+    grid-area: content;
+    display: flex;
+    flex-direction: column;
+    gap: $space-xs;
+  }
+
+  &-icon {
+    grid-area: icon;
+    justify-self: end;
+    padding: $space-xs;
+    rotate: 180deg;
+
+    @media (max-width: $breakpoint-s) {
+      display: none;
+    }
+  }
+}
